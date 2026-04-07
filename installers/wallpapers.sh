@@ -35,15 +35,18 @@ echo "Wallpaper switcher script written to $SWITCHER"
 # Write the systemd user service
 mkdir -p "$HOME/.config/systemd/user"
 
+# Get the actual UID
+UID_NUM=$(id -u)
+
 cat > "$HOME/.config/systemd/user/wallpaper-switcher.service" <<EOF
 [Unit]
 Description=Change desktop wallpaper
+After=plasma-core.target
 
 [Service]
 Type=oneshot
 ExecStart=$HOME/.local/bin/wallpaper-switcher.sh
-Environment=DISPLAY=:0
-Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%i/bus
+Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${UID_NUM}/bus"
 EOF
 
 # Write the systemd timer (every 15 minutes)
