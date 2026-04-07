@@ -70,7 +70,6 @@ show_menu() {
     echo "╠══════════════════════════════════════════╣"
     echo "║  Toggle items on/off, then press R       ║"
     echo "╠══════════════════════════════════════════╣"
-    printf "  %-40s  ║\n" "Last update: $LAST_COMMIT"
 
     for i in "${!SCRIPTS[@]}"; do
         local num=$((i + 1))
@@ -83,6 +82,7 @@ show_menu() {
     echo "║  [R] Run setup                           ║"
     echo "║  [Q] Quit                                ║"
     echo "╚══════════════════════════════════════════╝"
+    printf "  %-40s  ║\n" "Last update: $LAST_COMMIT"
     echo ""
     read -rp "Choice: " choice </dev/tty
 
