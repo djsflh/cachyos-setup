@@ -1,11 +1,10 @@
 #!/bin/bash
 echo "--- Installing QEMU/KVM ---"
 
-echo "  → Installing packages..." | tee -a "$LOGFILE"
 run_quiet "Installing QEMU packages" sudo pacman -Sy --noconfirm qemu-full virt-manager swtpm >> "$LOGFILE" 2>&1
 
 # Fix firewall backend so libvirt works with UFW
-run_quiet "Setting firewall backend" sudo tee -a /etc/libvirt/network.conf
+run_quiet "Setting firewall backend" echo 'firewall_backend = "iptables"' | sudo tee -a /etc/libvirt/network.conf
 
 # Enable libvirt daemon and socket
 run_quiet "Enabling libvirtd"  sudo systemctl enable --now libvirtd.service
