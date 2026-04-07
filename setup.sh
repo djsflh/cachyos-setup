@@ -75,7 +75,7 @@ show_menu() {
         local num=$((i + 1))
         local icon
         [[ "${STATES[$i]}" == "on" ]] && icon="✔ ON " || icon="✘ OFF"
-        printf "║[%2d] %-28s%s║\n" "$num" "${LABELS[$i]}" "$icon"
+        printf "║[%2d ]%-28s%s║\n" "$num" "${LABELS[$i]}" "$icon"
     done
 
     echo "╠══════════════════════════════════════╣"
