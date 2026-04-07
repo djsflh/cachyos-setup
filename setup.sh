@@ -118,7 +118,7 @@ done
 # ── Shell config ──────────────────────────────────────────────────
 echo ""
 echo "--- Configuring fish aliases ---"
-bash "$INSTALL_DIR/configs/fish-aliases.sh"
+bash "$INSTALL_DIR/installers/fish-aliases.sh"
 
 echo ""
 echo "=== Setup Complete ==="
