@@ -15,7 +15,7 @@ mkdir -p "$HOME/.local/bin"
 
 cat > "$SWITCHER" <<'EOF'
 #!/bin/bash
-WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 
 # Pick a random wallpaper
 WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | shuf -n 1)
