@@ -2,7 +2,7 @@
 echo "--- Setting up wallpapers ---"
 
 WALLPAPER_SRC="$HOME/cachyos-setup/wallpapers"
-WALLPAPER_DEST="$HOME/Pictures"
+WALLPAPER_DEST="$HOME/Pictures/wallpapers"
 
 # Copy wallpapers
 mkdir -p "$WALLPAPER_DEST"
