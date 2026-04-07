@@ -2,11 +2,11 @@
 echo "--- Setting up wallpapers ---"
 
 WALLPAPER_SRC="$HOME/cachyos-setup/wallpapers"
-WALLPAPER_DEST="$HOME/Pictures/Wallpapers"
+WALLPAPER_DEST="$HOME/Pictures"
 
 # Copy wallpapers
 mkdir -p "$WALLPAPER_DEST"
-cp -r "$WALLPAPER_SRC"/. "$WALLPAPER_DEST/"
+find "$WALLPAPER_SRC" -type f ! -name "*.md" -exec cp {} "$WALLPAPER_DEST/" \;
 echo "Wallpapers copied to $WALLPAPER_DEST"
 
 # Write the wallpaper switcher script
