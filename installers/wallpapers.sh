@@ -4,36 +4,63 @@ echo "--- Setting up wallpapers ---"
 WALLPAPER_SRC="$HOME/cachyos-setup/wallpapers"
 WALLPAPER_DEST="$HOME/Pictures/Wallpapers"
 
+# Copy wallpapers
 mkdir -p "$WALLPAPER_DEST"
 cp -r "$WALLPAPER_SRC"/. "$WALLPAPER_DEST/"
 echo "Wallpapers copied to $WALLPAPER_DEST"
 
-# Install a wallpaper switcher
-# 'variety' is a good option available in AUR
-if ! command -v variety &>/dev/null; then
-    # Use yay or paru for AUR
-    if command -v yay &>/dev/null; then
-        yay -S --noconfirm variety
-    elif command -v paru &>/dev/null; then
-        paru -S --noconfirm variety
-    else
-        echo "No AUR helper found. Install variety manually for wallpaper switching."
-    fi
+# Write the wallpaper switcher script
+SWITCHER="$HOME/.local/bin/wallpaper-switcher.sh"
+mkdir -p "$HOME/.local/bin"
+
+cat > "$SWITCHER" <<'EOF'
+#!/bin/bash
+WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+
+# Pick a random wallpaper
+WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | shuf -n 1)
+
+if [ -z "$WALLPAPER" ]; then
+    echo "No wallpapers found in $WALLPAPER_DIR"
+    exit 1
 fi
 
-# Configure variety to use your folder and switch every 15 min
-VARIETY_CONF="$HOME/.config/variety/variety.conf"
-mkdir -p "$HOME/.config/variety"
-
-if [ -f "$VARIETY_CONF" ]; then
-    # Update interval to 15 minutes (900 seconds)
-    sed -i 's/^change_interval\s*=.*/change_interval = 900/' "$VARIETY_CONF"
-else
-    cat > "$VARIETY_CONF" <<EOF
-[variety]
-change_interval = 900
-sources = [["local", True, "$WALLPAPER_DEST"]]
+# Set wallpaper via KDE plasma
+plasma-apply-wallpaperimage "$WALLPAPER"
 EOF
-fi
 
-echo "Wallpaper switcher configured for 15-minute intervals."
+chmod +x "$SWITCHER"
+echo "Wallpaper switcher script written to $SWITCHER"
+
+# Write the systemd user service
+mkdir -p "$HOME/.config/systemd/user"
+
+cat > "$HOME/.config/systemd/user/wallpaper-switcher.service" <<EOF
+[Unit]
+Description=Change desktop wallpaper
+
+[Service]
+Type=oneshot
+ExecStart=$HOME/.local/bin/wallpaper-switcher.sh
+Environment=DISPLAY=:0
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%i/bus
+EOF
+
+# Write the systemd timer (every 15 minutes)
+cat > "$HOME/.config/systemd/user/wallpaper-switcher.timer" <<EOF
+[Unit]
+Description=Change wallpaper every 15 minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=15min
+
+[Install]
+WantedBy=timers.target
+EOF
+
+# Enable and start the timer
+systemctl --user daemon-reload
+systemctl --user enable --now wallpaper-switcher.timer
+
+echo "Wallpaper switcher active — changes every 15 minutes."
