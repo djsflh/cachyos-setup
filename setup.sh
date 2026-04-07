@@ -59,11 +59,16 @@ toggle() {
     [[ "${STATES[$idx]}" == "on" ]] && STATES[$idx]="off" || STATES[$idx]="on"
 }
 
+# ── Show last commit ──────────────────────────────────────────────
+LAST_COMMIT=$(git -C "$INSTALL_DIR" log -1 --format="%cr: %s")
+
 # ── Menu ──────────────────────────────────────────────────────────
 show_menu() {
     clear
     echo "╔══════════════════════════════════════════╗"
     echo "║         CachyOS Setup Installer          ║"
+    echo "╠══════════════════════════════════════════╣"
+    printf "║  %-40s  ║\n" "Last update: $LAST_COMMIT"
     echo "╠══════════════════════════════════════════╣"
     echo "║  Toggle items on/off, then press R       ║"
     echo "╠══════════════════════════════════════════╣"
