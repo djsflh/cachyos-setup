@@ -5,14 +5,14 @@ REPO_CLONE="https://github.com/djsflh/cachyos-setup.git"
 INSTALL_DIR="$HOME/cachyos-setup"
 
 # ── Default: all enabled ──────────────────────────────────────────
-RUN_QEMU=true
-RUN_NANO=true
-RUN_SSH=true
-RUN_UFW=true
-RUN_BTRFS=true
-RUN_WALLPAPERS=true
-RUN_KDE=true
-RUN_SCRIPTS=true
+RUN_QEMU=false
+RUN_NANO=false
+RUN_SSH=false
+RUN_UFW=false
+RUN_BTRFS=false
+RUN_WALLPAPERS=false
+RUN_KDE=false
+RUN_SCRIPTS=false
 RUN_VM_RESTORE=false   # off by default — only run when you want it
 
 # ── Interactive menu ──────────────────────────────────────────────
