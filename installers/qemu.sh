@@ -2,24 +2,25 @@
 echo "--- Installing QEMU/KVM ---"
 
 sudo pacman -Sy --noconfirm \
-    qemu-desktop \
+    qemu-full \
     virt-manager \
-    libvirt \
-    dnsmasq \
-    bridge-utils \
-    vde2 \
-    openbsd-netcat \
-    ebtables \
-    iptables
+    swtpm
 
-# Enable and start libvirt daemon
-sudo systemctl enable --now libvirtd
+# Fix firewall backend so libvirt works with UFW
+echo 'firewall_backend = "iptables"' | sudo tee -a /etc/libvirt/network.conf
 
-# Add your user to the libvirt and kvm groups
+# Enable libvirt daemon and socket
+sudo systemctl enable --now libvirtd.service
+sudo systemctl enable --now libvirtd.socket
+
+# Add user to libvirt and kvm groups
 sudo usermod -aG libvirt,kvm "$USER"
 
-# Enable default network autostart
+# Allow VM network traffic through UFW
+sudo ufw route allow from 192.168.122.0/24
+
+# Enable default NAT network
 sudo virsh net-autostart default
 sudo virsh net-start default 2>/dev/null || true
 
-echo "QEMU installed. NOTE: Log out and back in for group changes to take effect."
+echo "QEMU installed. Log out and back in for group changes to take effect."
