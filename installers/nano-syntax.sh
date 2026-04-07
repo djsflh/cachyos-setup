@@ -1,7 +1,8 @@
 #!/bin/bash
 echo "--- Installing nano syntax highlighting ---"
 
-sudo pacman -Sy --noconfirm nano-syntax-highlighting
+echo "  → Installing packages..." | tee -a "$LOGFILE"
+run_quiet "Installing nano-syntax packages" sudo pacman -Sy --noconfirm nano-syntax-highlighting >> "$LOGFILE" 2>&1
 
 # Activate it — append to nanorc if not already there
 NANORC="$HOME/.nanorc"

@@ -3,6 +3,28 @@ set -e
 
 REPO_CLONE="https://github.com/djsflh/cachyos-setup.git"
 INSTALL_DIR="$HOME/cachyos-setup"
+LOGFILE="$HOME/cachyos-setup-install.log"
+export LOGFILE  # makes it available to all child scripts
+
+echo "=== CachyOS Setup $(date) ===" > "$LOGFILE"
+echo "Log file: $LOGFILE"
+echo ""
+
+# Usage: run_quiet "Description" command args...
+run_quiet() {
+    local desc="$1"
+    shift
+    echo -n "  → $desc... "
+    echo "--- $desc ---" >> "$LOGFILE"
+    if "$@" >> "$LOGFILE" 2>&1; then
+        echo "✔"
+        echo "  ✔ Done" >> "$LOGFILE"
+    else
+        echo "✘ FAILED (check $LOGFILE)"
+        echo "  ✘ FAILED" >> "$LOGFILE"
+    fi
+}
+export -f run_quiet
 
 # ── Default: all enabled ──────────────────────────────────────────
 RUN_QEMU=false
