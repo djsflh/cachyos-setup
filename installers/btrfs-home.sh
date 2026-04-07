@@ -3,7 +3,7 @@ echo "--- Configuring btrfs-assistant home config ---"
 
 # btrfs-assistant stores snapper configs — we create one for home
 # First ensure snapper is installed
-sudo pacman -Sy --noconfirm snapper btrfs-assistant
+#sudo pacman -Sy --noconfirm snapper btrfs-assistant #if this isn't already installed, then don't install it
 
 # Check if home config already exists
 if sudo snapper list-configs | grep -q "^home "; then
