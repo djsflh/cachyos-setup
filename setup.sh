@@ -71,10 +71,11 @@ if ! command -v git &>/dev/null; then
 fi
 
 if [ ! -d "$INSTALL_DIR" ]; then
-    git clone "$REPO_CLONE" "$INSTALL_DIR"
+    git clone --recurse-submodules "$REPO_CLONE" "$INSTALL_DIR"
 else
     echo "Repo already exists, pulling latest..."
     git -C "$INSTALL_DIR" pull
+    git -C "$INSTALL_DIR" submodule update --init --recursive
 fi
 
 cd "$INSTALL_DIR"
