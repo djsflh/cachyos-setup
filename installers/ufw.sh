@@ -1,6 +1,7 @@
 #!/bin/bash
 echo "--- Configuring UFW ---"
 
+echo "  → Installing packages..." | tee -a "$LOGFILE"
 run_quiet "Installing ufw packages" sudo pacman -Sy --noconfirm ufw >> "$LOGFILE" 2>&1
 
 # Enable UFW if not already
