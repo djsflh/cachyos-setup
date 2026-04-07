@@ -70,14 +70,14 @@ show_menu() {
     echo "╠══════════════════════════════════════╣"
     echo "║  Toggle items on/off, then press R   ║"
     echo "╠══════════════════════════════════════╣"
-    printf "║  [1] QEMU/KVM             %s ║\n" "$($RUN_QEMU && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [2] Nano syntax          %s ║\n" "$($RUN_NANO && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [3] SSH                  %s ║\n" "$($RUN_SSH && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [4] UFW firewall         %s ║\n" "$($RUN_UFW && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [5] btrfs home config    %s ║\n" "$($RUN_BTRFS && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [6] Wallpapers           %s ║\n" "$($RUN_WALLPAPERS && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [7] Python scripts       %s ║\n" "$($RUN_SCRIPTS && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [8] Restore VM           %s ║\n" "$($RUN_VM_RESTORE && echo '✔ ON ' || echo '✘ OFF')"
+
+    for i in "${!SCRIPTS[@]}"; do
+        local num=$((i + 1))
+        local icon
+        [[ "${STATES[$i]}" == "on" ]] && icon="✔ ON " || icon="✘ OFF"
+        printf "║  [%2d] %-28s %s  ║\n" "$num" "${LABELS[$i]}" "$icon"
+    done
+
     echo "╠══════════════════════════════════════╣"
     echo "║  [R] Run setup                       ║"
     echo "║  [Q] Quit                            ║"
