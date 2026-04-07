@@ -43,7 +43,7 @@ show_menu() {
     echo "║  [Q] Quit                            ║"
     echo "╚══════════════════════════════════════╝"
     echo ""
-    read -rp "Choice: " choice
+    read -rp "Choice: " choice </dev/tty
 
     case "${choice^^}" in
         1) toggle RUN_QEMU ;;
