@@ -11,7 +11,6 @@ RUN_SSH=false
 RUN_UFW=false
 RUN_BTRFS=false
 RUN_WALLPAPERS=false
-RUN_KDE=false
 RUN_SCRIPTS=false
 RUN_VM_RESTORE=false   # off by default — only run when you want it
 
@@ -35,9 +34,8 @@ show_menu() {
     printf "║  [4] UFW firewall        %s  ║\n" "$($RUN_UFW && echo '✔ ON ' || echo '✘ OFF')"
     printf "║  [5] btrfs home config   %s  ║\n" "$($RUN_BTRFS && echo '✔ ON ' || echo '✘ OFF')"
     printf "║  [6] Wallpapers          %s  ║\n" "$($RUN_WALLPAPERS && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [7] KDE settings        %s  ║\n" "$($RUN_KDE && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [8] Python scripts      %s  ║\n" "$($RUN_SCRIPTS && echo '✔ ON ' || echo '✘ OFF')"
-    printf "║  [9] Restore VM          %s  ║\n" "$($RUN_VM_RESTORE && echo '✔ ON ' || echo '✘ OFF')"
+    printf "║  [7] Python scripts      %s  ║\n" "$($RUN_SCRIPTS && echo '✔ ON ' || echo '✘ OFF')"
+    printf "║  [8] Restore VM          %s  ║\n" "$($RUN_VM_RESTORE && echo '✔ ON ' || echo '✘ OFF')"
     echo "╠══════════════════════════════════════╣"
     echo "║  [R] Run setup                       ║"
     echo "║  [Q] Quit                            ║"
@@ -52,9 +50,8 @@ show_menu() {
         4) toggle RUN_UFW ;;
         5) toggle RUN_BTRFS ;;
         6) toggle RUN_WALLPAPERS ;;
-        7) toggle RUN_KDE ;;
-        8) toggle RUN_SCRIPTS ;;
-        9) toggle RUN_VM_RESTORE ;;
+        7) toggle RUN_SCRIPTS ;;
+        8) toggle RUN_VM_RESTORE ;;
         R) return 0 ;;
         Q) echo "Aborted."; exit 0 ;;
         *) echo "Invalid choice." ;;
@@ -89,7 +86,6 @@ $RUN_SSH         && bash installers/ssh.sh
 $RUN_UFW         && bash installers/ufw.sh
 $RUN_BTRFS       && bash installers/btrfs-home.sh
 $RUN_WALLPAPERS  && bash installers/wallpapers.sh
-$RUN_KDE         && bash installers/kde-settings.sh
 $RUN_VM_RESTORE  && bash vms/restore-vm.sh
 
 if $RUN_SCRIPTS; then
