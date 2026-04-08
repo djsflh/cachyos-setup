@@ -1,5 +1,4 @@
 #!/bin/bash
-echo "--- Setting up wallpapers ---"
 
 WALLPAPER_SRC="$HOME/cachyos-setup/wallpapers"
 WALLPAPER_DEST="$HOME/Pictures/wallpapers"
@@ -7,6 +6,7 @@ WALLPAPER_DEST="$HOME/Pictures/wallpapers"
 # Copy wallpapers
 mkdir -p "$WALLPAPER_DEST"
 find "$WALLPAPER_SRC" -type f ! -name "*.md" -exec cp {} "$WALLPAPER_DEST/" \;
+echo
 echo "Wallpapers copied to $WALLPAPER_DEST"
 
 # Write the wallpaper switcher script
@@ -30,6 +30,7 @@ plasma-apply-wallpaperimage "$WALLPAPER"
 EOF
 
 chmod +x "$SWITCHER"
+echo
 echo "Wallpaper switcher script written to $SWITCHER"
 
 # Write the systemd user service
@@ -66,4 +67,5 @@ EOF
 systemctl --user daemon-reload
 systemctl --user enable --now wallpaper-switcher.timer
 
+echo
 echo "Wallpaper switcher active — changes every 15 minutes."
