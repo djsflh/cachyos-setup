@@ -20,6 +20,14 @@ cat > "$SWITCHER" <<'EOF'
 #!/bin/bash
 WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 
+# Wait for Plasma's wallpaper D-Bus service to be available
+for i in $(seq 1 30); do
+    if qdbus org.kde.plasmashell /PlasmaShell &>/dev/null; then
+        break
+    fi
+    sleep 2
+done
+
 # Pick a random wallpaper
 WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | shuf -n 1)
 
@@ -39,18 +47,21 @@ echo "Wallpaper switcher script written to $SWITCHER"
 # Write the systemd user service
 mkdir -p "$HOME/.config/systemd/user"
 
-# Get the actual UID
 UID_NUM=$(id -u)
 
 cat > "$HOME/.config/systemd/user/wallpaper-switcher.service" <<EOF
 [Unit]
 Description=Change desktop wallpaper
-After=plasma-core.target
+After=plasma-plasmashell.service graphical-session.target
+Requires=graphical-session.target
 
 [Service]
 Type=oneshot
 ExecStart=$HOME/.local/bin/wallpaper-switcher.sh
 Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${UID_NUM}/bus"
+
+[Install]
+WantedBy=graphical-session.target
 EOF
 
 # Write the systemd timer (every 15 minutes)
