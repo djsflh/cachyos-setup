@@ -2,14 +2,18 @@
 
 # Check if home config already exists
 if sudo snapper list-configs | grep -q "^home "; then
+    echo
     echo "Snapper home config already exists, skipping."
+    echo
 else
     # Create snapper config for /home
+    echo "Creating snapper config for /home"
     sudo snapper -c home create-config /home
-    echo "Created snapper config for /home"
+    echo 
 fi
 
 # Disable timeline snapshots for home config
 sudo snapper -c home set-config "TIMELINE_CREATE=no"
 
+echo
 echo "btrfs home config created with timeline snapshots disabled."
