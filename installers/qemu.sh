@@ -3,17 +3,17 @@
 # https://wiki.cachyos.org/virtualization/qemu_and_vmm_setup/
 
 echo "Installing qemu-full"
-echo "   sudo pacman -Sy --noconfirm qemu-full >> \"\$LOGFILE\" 2>&1"
+echo "   sudo pacman -Sy --noconfirm qemu-full"
 run_quiet "Installing qemu-full" sudo pacman -Sy --noconfirm qemu-full >> "$LOGFILE" 2>&1
 echo
 
 echo "Installing virt-manager"
-echo "   sudo pacman -Sy --noconfirm virt-manager >> \"\$LOGFILE\" 2>&1"
+echo "   sudo pacman -Sy --noconfirm virt-manager"
 run_quiet "Installing virt-manager" sudo pacman -Sy --noconfirm virt-manager >> "$LOGFILE" 2>&1
 echo
 
 echo "Installing swtpm"
-echo "   sudo pacman -Sy --noconfirm swtpm >> \"\$LOGFILE\" 2>&1"
+echo "   sudo pacman -Sy --noconfirm swtpm"
 run_quiet "Installing swtpm" sudo pacman -Sy --noconfirm swtpm >> "$LOGFILE" 2>&1
 echo
 
