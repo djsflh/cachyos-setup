@@ -18,5 +18,5 @@ fish -c '
     end
 ' 2>/dev/null
 
-echo "added aliases to ~/.config/fish/config.fish"
+echo "functions added to ~/.config/fish/functions/"
 fish -c "source ~/.config/fish/config.fish"
