@@ -2,6 +2,7 @@
 
 # https://wiki.cachyos.org/virtualization/qemu_and_vmm_setup/
 
+echo
 echo "Installing qemu-full"
 echo "   sudo pacman -Sy --noconfirm qemu-full"
 run_quiet "Installing qemu-full" sudo pacman -Sy --noconfirm qemu-full >> "$LOGFILE" 2>&1
