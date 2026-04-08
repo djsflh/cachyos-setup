@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo
+echo "Adding aliases to ~/.config/fish/functions/"
+echo
+
 fish -c '
     if not functions -q gitpush
         alias --save gitpush="git add -A && git commit -m (read -P \"Commit message: \") && git push"
@@ -18,5 +22,4 @@ fish -c '
     end
 ' 2>/dev/null
 
-echo "functions added to ~/.config/fish/functions/"
 fish -c "source ~/.config/fish/config.fish"
