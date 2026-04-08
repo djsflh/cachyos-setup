@@ -8,7 +8,9 @@ LINE='include "/usr/share/nano-syntax-highlighting/*.nanorc"'
 
 if ! grep -qF "$LINE" "$NANORC" 2>/dev/null; then
     echo "$LINE" >> "$NANORC"
+    echo
     echo "Added nano syntax highlighting to ~/.nanorc"
 else
+    echo
     echo "nano syntax highlighting already configured"
 fi
