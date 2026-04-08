@@ -15,4 +15,3 @@ fi
 # Disable timeline snapshots for home config
 echo "Disabling timeline snapshots for home config"
 sudo snapper -c home set-config "TIMELINE_CREATE=no"
-echo
