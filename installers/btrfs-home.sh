@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Check if home config already exists
+    echo
 if sudo snapper list-configs | grep -q "^home "; then
     echo
     echo "Snapper home config already exists, skipping."
