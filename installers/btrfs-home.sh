@@ -1,10 +1,4 @@
 #!/bin/bash
-echo "--- Configuring btrfs-assistant home config ---"
-
-# btrfs-assistant stores snapper configs — we create one for home
-# First ensure snapper is installed
-echo "  → Installing packages..." | tee -a "$LOGFILE"
-run_quiet "Installing btrfs/snapper packages" sudo pacman -Sy --noconfirm snapper btrfs-assistant >> "$LOGFILE" 2>&1
 
 # Check if home config already exists
 if sudo snapper list-configs | grep -q "^home "; then
@@ -19,4 +13,3 @@ fi
 sudo snapper -c home set-config "TIMELINE_CREATE=no"
 
 echo "btrfs home config created with timeline snapshots disabled."
-echo "Open btrfs-assistant to verify — it will now show the Home config."
