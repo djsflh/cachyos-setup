@@ -3,15 +3,22 @@
 FISH_CONFIG="$HOME/.config/fish/config.fish"
 mkdir -p "$HOME/.config/fish"
 
-# git push shortcut
-echo
-fish -c 'alias --save gitpush="git add -A && git commit -m (read -P \"Commit message: \") && git push"' 2>/dev/null
+fish -c '
+    if not functions -q gitpush
+        alias --save gitpush="git add -A && git commit -m (read -P \"Commit message: \") && git push"
+    end
 
-# setup re-run alias
-echo
-fish -c "alias --save setup='curl -s \"https://raw.githubusercontent.com/djsflh/cachyos-setup/main/setup.sh?\$(date +%s)\" | bash'" 2>/dev/null
+    if not functions -q setup
+        alias --save setup="curl -s \"https://raw.githubusercontent.com/djsflh/cachyos-setup/main/setup.sh?\$(date +%s)\" | bash"
+    end
 
-echo
-echo "Fish aliases saved:"
-echo "  gitpush  → stages, commits, and pushes"
-echo "  setup    → re-runs the cachyos setup script"
+    if not functions -q servermode
+        alias --save servermode="sudo systemctl isolate multi-user.target"
+    end
+
+    if not functions -q desktopmode
+        alias --save desktopmode="sudo systemctl isolate graphical.target"
+    end
+' 2>/dev/null
+
+echo "added aliases to ~/.config/fish/config.fish"
