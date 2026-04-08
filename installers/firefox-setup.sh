@@ -64,12 +64,12 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
 EOF
 
 # ── Find or create Firefox profile ───────────────────────────────
-PROFILE_DIR=$(find "$HOME/.mozilla/firefox" -maxdepth 1 -name "*.default-release" 2>/dev/null | head -n 1)
+PROFILE_DIR=$(find "$HOME/.config/mozilla/firefox" -maxdepth 1 -name "*.default-release" 2>/dev/null | head -n 1)
 
 if [ -z "$PROFILE_DIR" ]; then
     # Firefox has never been run — launch it briefly to create profile
     run_quiet "Creating Firefox profile" timeout 5 firefox --headless 2>/dev/null || true
-    PROFILE_DIR=$(find "$HOME/.mozilla/firefox" -maxdepth 1 -name "*.default-release" 2>/dev/null | head -n 1)
+    PROFILE_DIR=$(find "$HOME/.config/mozilla/firefox" -maxdepth 1 -name "*.default-release" 2>/dev/null | head -n 1)
 fi
 
 # ── Write user.js ─────────────────────────────────────────────────
