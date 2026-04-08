@@ -1,23 +1,28 @@
 #!/bin/bash
-echo "--- Installing QEMU/KVM ---"
 
-run_quiet "Installing QEMU packages" sudo pacman -Sy --noconfirm qemu-full virt-manager swtpm >> "$LOGFILE" 2>&1
+#https://wiki.cachyos.org/virtualization/qemu_and_vmm_setup/
 
-# Fix firewall backend so libvirt works with UFW
-run_quiet "Setting firewall backend" echo 'firewall_backend = "iptables"' | sudo tee -a /etc/libvirt/network.conf
+echo "====QEMU and VMM (Virtual Machine Manager) Setup===="
+run_quiet "Installing qemu-full" sudo pacman -Sy --noconfirm qemu-full >> "$LOGFILE" 2>&1
+run_quiet "Installing virt-manager" sudo pacman -Sy --noconfirm virt-manager >> "$LOGFILE" 2>&1
+run_quiet "Installing swtpm" sudo pacman -Sy --noconfirm swtpm >> "$LOGFILE" 2>&1
 
-# Enable libvirt daemon and socket
-run_quiet "Enabling libvirtd"  sudo systemctl enable --now libvirtd.service
-sudo systemctl enable --now libvirtd.socket
+# Force libvirt to use iptables
+echo "Force libvirt to use iptables" echo 'firewall_backend = "iptables"' | sudo tee -a /etc/libvirt/network.conf
 
-# Add user to libvirt and kvm groups
-run_quiet "Adding user to libvirt and kvm groups" sudo usermod -aG libvirt,kvm "$USER"
+# This will add the user to the "libvirt" group so they can use it:
+echo "Add the user to the "libvirt" group so they can use it" sudo usermod -aG libvirt "$USER"
 
-# Allow VM network traffic through UFW
-run_quiet "Allowing VM network traffic through UFW" sudo ufw route allow from 192.168.122.0/24
+# LXC backend (optional, for linux containers, enabling both backends does not conflict):
+echo "Enabling LXC backend" sudo systemctl enable --now libvirtd.service
 
-# Enable default NAT network
-run_quiet "Enabling default NAT network" sudo virsh net-autostart default
-sudo virsh net-start default 2>/dev/null || true
+# QEMU backend (for VMs):
+echo "Enabling LXC backend" sudo systemctl enable --now libvirtd.socket
+
+# This will bring Internet up in a VM whenever one starts:
+echo "Bring Internet up in a VM whenever one starts" sudo virsh net-autostart default
+
+# And to enable the entire VM network to have unfettered transit: (You should consider if you need more granular firewall rules based on your use case and security posture)
+echo "Allowing VM network traffic through UFW" sudo ufw route allow from 192.168.122.0/24
 
 echo "QEMU installed. Log out and back in for group changes to take effect."
