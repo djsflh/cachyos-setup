@@ -120,10 +120,5 @@ for i in "${!SCRIPTS[@]}"; do
     fi
 done
 
-# ── Shell config ──────────────────────────────────────────────────
-echo ""
-echo "--- Configuring fish aliases ---"
-bash "$INSTALL_DIR/installers/fish-aliases.sh"
-
 echo ""
 echo "=== Setup Complete ==="
