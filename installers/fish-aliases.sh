@@ -19,4 +19,4 @@ fish -c '
 ' 2>/dev/null
 
 echo "added aliases to ~/.config/fish/config.fish"
-source ~/.config/fish/config.fish
+fish -c "source ~/.config/fish/config.fish"
