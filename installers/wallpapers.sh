@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Pull the wallpapers submodule only now that the user selected it
+git -C "$HOME/cachyos-setup" submodule update --init --recursive wallpapers
+
 WALLPAPER_SRC="$HOME/cachyos-setup/wallpapers"
 WALLPAPER_DEST="$HOME/Pictures/wallpapers"
 
