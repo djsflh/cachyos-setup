@@ -3,7 +3,7 @@ set -e
 
 echo "=== Checking for system updates ==="
 
-if checkupdates > /dev/null 2>&1; then
+if checkupdates > /dev/null 2>&1 && [[ $(checkupdates | wc -l) -gt 0 ]]; then
     echo "Updates are available!"
     echo ""
     echo "It is recommended to update your system first."
