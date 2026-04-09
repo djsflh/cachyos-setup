@@ -41,6 +41,7 @@ rm -f /tmp/wallsave.tmp
 echo
 
 echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
+mkdir -p ~/.local/share/applications
 cat > ~/.local/share/applications/Save\ Current\ Wallpaper.desktop << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
