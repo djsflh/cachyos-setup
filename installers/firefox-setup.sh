@@ -127,10 +127,6 @@ user_pref("toolkit.telemetry.firstShutdownPing.enabled", false);
 user_pref("browser.ping-centre.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.telemetry", false);
-
-// Block AI features
-user_pref("browser.ml.chat.enabled", false);
-user_pref("browser.ml.chat.sidebar", false);
 EOF
     cp "$TMPFILE" "$PROFILE_DIR/user.js"
     rm "$TMPFILE"
