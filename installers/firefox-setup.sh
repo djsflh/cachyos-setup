@@ -35,7 +35,7 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "SponsoredPocket": false,
       "SponsoredStories": false,
       "Snippets": false,
-      "Locked": true
+      "locked": false
     }
     "UserMessaging": {
       "ExtensionRecommendations": false,
@@ -44,18 +44,18 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "SkipOnboarding": true,
       "MoreFromMozilla": false,
       "FirefoxLabs": false,
-      "Locked": true
+      "locked": false
     }
     "HttpsOnlyMode": "enabled",
     "DNSOverHTTPS": {
       "Enabled": true,
       "ProviderURL": "https://mozilla.cloudflare-dns.com/dns-query",
-      "Locked": true,
+      "locked": false,
       "Fallback": false
     },
     "EnableTrackingProtection": {
       "Value": true,
-      "Locked": true,
+      "locked": false,
       "Cryptomining": true,
       "Fingerprinting": true,
       "EmailTracking": true,
