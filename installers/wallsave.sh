@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-echo "=== Installing qt5-tools (if needed) ==="
-sudo pacman -S --needed qt5-tools
+echo "=== Installing qt5-tools ==="
+run_quiet "Installing qt5-tools" sudo pacman -S --needed qt5-tools
 
 echo "=== Creating ~/Pictures/saved directory ==="
 mkdir -p ~/Pictures/saved
@@ -11,7 +11,6 @@ echo "=== Creating silent wallsave script ==="
 cat > ~/.local/bin/wallsave << 'EOF'
 #!/bin/bash
 
-# Silent wallpaper saver for KDE Plasma 6
 WALLPAPER=$(qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper 0 | grep "Image: file:" | cut -c 15-)
 
 # Clean up quotes if present
