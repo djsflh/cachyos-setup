@@ -8,15 +8,19 @@ run_quiet() {
     "$@" >/dev/null 2>&1 || true
 }
 
-echo "=== Installing qt5-tools ==="
+echo
 run_quiet "Installing qt5-tools" sudo pacman -S --needed qt5-tools
+echo
 
 echo "=== Creating ~/Pictures/saved directory ==="
+echo
 mkdir -p ~/Pictures/saved
 
-echo "=== Creating silent wallsave script ==="
+echo "=== Creating wallsave script ==="
+echo
 
-cat | sudo tee /usr/bin/wallsave << 'EOF'
+											  
+cat > /tmp/wallsave.tmp << 'EOF'
 #!/bin/bash
 
 # Get current wallpaper path
@@ -33,7 +37,10 @@ DEST="$HOME/Pictures/saved/$FILENAME"
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
 EOF
 
+sudo tee /usr/bin/wallsave < /tmp/wallsave.tmp >/dev/null														 
 sudo chmod +x /usr/bin/wallsave
+rm -f /tmp/wallsave.tmp
+echo
 
 echo "=== Updating desktop shortcut ==="
 cat > ~/Desktop/Save\ Current\ Wallpaper.desktop << 'EOF'
@@ -48,13 +55,9 @@ Categories=Utility;
 EOF
 
 chmod +x ~/Desktop/Save\ Current\ Wallpaper.desktop
+echo	
 
 echo "=== Installation complete! ==="
-echo ""
-echo "wallsave is now completely silent."
-echo "It saves the wallpaper using its original filename to:"
-echo "~/Pictures/saved/"
-echo "(overwrites if a file with the same name already exists)"
-echo ""
-echo "You can run it with: wallsave"
-echo "or by double-clicking the desktop icon."
+echo
+echo "run with: wallsave"
+echo "or double-click the desktop icon"
