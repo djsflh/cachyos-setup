@@ -8,7 +8,8 @@ echo "=== Creating ~/Pictures/saved directory ==="
 mkdir -p ~/Pictures/saved
 
 echo "=== Creating silent wallsave script ==="
-sudo cat > /usr/bin/wallsave << 'EOF'
+
+cat | sudo tee /usr/bin/wallsave << 'EOF'
 #!/bin/bash
 
 WALLPAPER=$(qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper 0 | grep "Image: file:" | cut -c 15-)
