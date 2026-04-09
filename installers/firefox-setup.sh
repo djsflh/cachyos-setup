@@ -40,6 +40,12 @@ cat > "$TMPFILE" <<'EOF'
       "Snippets": false,
       "locked": false
     },
+    "FirefoxSuggest": {
+      "WebSuggestions": false,
+      "SponsoredSuggestions": false,
+      "ImproveSuggest": false,
+      "Locked": false
+    },
     "UserMessaging": {
       "ExtensionRecommendations": false,
       "FeatureRecommendations": false,
@@ -50,6 +56,7 @@ cat > "$TMPFILE" <<'EOF'
       "locked": false
     },
     "HttpsOnlyMode": "enabled",
+    "NetworkPrediction": false,
     "DNSOverHTTPS": {
       "Enabled": true,
       "ProviderURL": "https://mozilla.cloudflare-dns.com/dns-query",
@@ -72,6 +79,9 @@ cat > "$TMPFILE" <<'EOF'
     },
     "Homepage": {
       "URL": "about:preferences#privacy"
+    },
+    "GenerativeAI": {
+      "ChatEnabled": false
     }
   }
 }
@@ -117,10 +127,6 @@ user_pref("toolkit.telemetry.firstShutdownPing.enabled", false);
 user_pref("browser.ping-centre.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.telemetry", false);
-
-// Block AI features
-user_pref("browser.ml.chat.enabled", false);
-user_pref("browser.ml.chat.sidebar", false);
 EOF
     cp "$TMPFILE" "$PROFILE_DIR/user.js"
     rm "$TMPFILE"
