@@ -38,13 +38,7 @@ cat > "$TMPFILE" <<'EOF'
       "SponsoredPocket": false,
       "SponsoredStories": false,
       "Snippets": false,
-      "Locked": false
-    },
-    "FirefoxSuggest": {
-      "WebSuggestions": false,
-      "SponsoredSuggestions": false,
-      "ImproveSuggest": false,
-      "Locked": false
+      "locked": false
     },
     "UserMessaging": {
       "ExtensionRecommendations": false,
@@ -53,19 +47,18 @@ cat > "$TMPFILE" <<'EOF'
       "SkipOnboarding": true,
       "MoreFromMozilla": false,
       "FirefoxLabs": false,
-      "Locked": false
+      "locked": false
     },
     "HttpsOnlyMode": "enabled",
-    "NetworkPrediction": false,
     "DNSOverHTTPS": {
       "Enabled": true,
       "ProviderURL": "https://mozilla.cloudflare-dns.com/dns-query",
-      "Locked": false,
+      "locked": false,
       "Fallback": false
     },
     "EnableTrackingProtection": {
       "Value": true,
-      "Locked": false,
+      "locked": false,
       "Cryptomining": true,
       "Fingerprinting": true,
       "EmailTracking": true,
@@ -79,9 +72,6 @@ cat > "$TMPFILE" <<'EOF'
     },
     "Homepage": {
       "URL": "about:preferences#privacy"
-    },
-    "GenerativeAI": {
-      "ChatEnabled": false
     }
   }
 }
