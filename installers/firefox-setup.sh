@@ -13,7 +13,8 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
     "DisableTelemetry": true,
     "DisableFirefoxStudies": true,
     "DisableFeedbackCommands": true,
-    "DisableFirefoxAccounts": false,
+    "DisableFirefoxAccounts": true,
+    "DisableRemoteImprovements": true,
     "OverrideFirstRunPage": "",
     "ExtensionSettings": {
       "uBlock0@raymondhill.net": {
