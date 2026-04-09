@@ -41,7 +41,7 @@ sudo chmod +x /usr/bin/wallsave
 rm -f /tmp/wallsave.tmp
 echo
 
-echo "=== Updating desktop shortcut ==="
+echo "=== Creating desktop shortcut ==="
 cat > ~/Desktop/Save\ Current\ Wallpaper.desktop << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
