@@ -55,7 +55,7 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
     "EnableTrackingProtection": {
       "Value": true,
       "Locked": false,
-      "Cryptomining": true,
+      "Cryptomining": false,
       "Fingerprinting": true,
       "EmailTracking": true
     }
