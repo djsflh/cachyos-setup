@@ -36,7 +36,7 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "SponsoredStories": false,
       "Snippets": false,
       "locked": false
-    }
+    },
     "UserMessaging": {
       "ExtensionRecommendations": false,
       "FeatureRecommendations": false,
@@ -45,7 +45,7 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "MoreFromMozilla": false,
       "FirefoxLabs": false,
       "locked": false
-    }
+    },
     "HttpsOnlyMode": "enabled",
     "DNSOverHTTPS": {
       "Enabled": true,
