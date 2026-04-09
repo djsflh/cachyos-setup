@@ -1,9 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "=== Updating system (pacman -Syu) ==="
-sudo pacman -Syu
-echo "System update completed."
+if checkupdates > /dev/null 2>&1; then
+    echo "⚠️  Updates are available!"
+    echo "   Please run 'sudo pacman -Syu' to update your system."
+    echo "   This script will now exit."
+    exit 0
+fi
 
 REPO_CLONE="https://github.com/djsflh/cachyos-setup.git"
 INSTALL_DIR="$HOME/cachyos-setup"
