@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+echo "=== Updating system (pacman -Syu) ==="
+sudo pacman -Syu
+echo "System update completed."
+
 REPO_CLONE="https://github.com/djsflh/cachyos-setup.git"
 INSTALL_DIR="$HOME/cachyos-setup"
 LOGFILE="$HOME/cachyos-setup-install.log"
