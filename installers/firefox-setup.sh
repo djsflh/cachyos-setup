@@ -13,7 +13,6 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
     "DisableTelemetry": true,
     "DisableFirefoxStudies": true,
     "DisableFeedbackCommands": true,
-    "DisablePocket": true,
     "DisableFirefoxAccounts": false,
     "OverrideFirstRunPage": "",
     "ExtensionSettings": {
@@ -36,7 +35,7 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "SponsoredPocket": false,
       "SponsoredStories": false,
       "Snippets": false,
-      "Locked": false
+      "Locked": true
     }
     "UserMessaging": {
       "ExtensionRecommendations": false,
@@ -45,31 +44,18 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "SkipOnboarding": true,
       "MoreFromMozilla": false,
       "FirefoxLabs": false,
-      "Locked": false
+      "Locked": true
     }
     "HttpsOnlyMode": "enabled",
     "DNSOverHTTPS": {
       "Enabled": true,
       "ProviderURL": "https://mozilla.cloudflare-dns.com/dns-query",
-      "Locked": false,
+      "Locked": true,
       "Fallback": false
     },
     "EnableTrackingProtection": {
       "Value": true,
-      "Locked": false,
-      "Cryptomining": true,
-      "Fingerprinting": true,
-      "EmailTracking": true,
-      "SuspectedFingerprinting": true,
-      "Category": "strict" | "standard",
-      "Exceptions": ["https://example.com"],
-      "BaselineExceptions": true | false,
-      "ConvenienceExceptions": true | false
-    }
-    "EnableTrackingProtection": {
-      "Value": true,
-      "Locked": false,
-      "Category": "strict",
+      "Locked": true,
       "Cryptomining": true,
       "Fingerprinting": true,
       "EmailTracking": true,
