@@ -81,7 +81,11 @@ cat > "$TMPFILE" <<'EOF'
       "URL": "about:preferences#privacy"
     },
     "GenerativeAI": {
-      "ChatEnabled": false
+      "Enabled": false,
+      "Chatbot": false,
+      "LinkPreviews": false,
+      "TabGroups": false,
+      "Locked": false
     }
   }
 }
