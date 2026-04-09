@@ -1,11 +1,27 @@
 #!/bin/bash
 set -e
 
+echo "=== Checking for system updates ==="
+
 if checkupdates > /dev/null 2>&1; then
-    echo "⚠️  Updates are available!"
-    echo "   Please run 'sudo pacman -Syu' to update your system."
-    echo "   This script will now exit."
-    exit 0
+    echo "Updates are available!"
+    echo ""
+    echo "It is recommended to update your system first."
+    echo ""
+
+    read -p "Do you want to proceed with the script anyway? (y/N): " -n 1 -r
+    echo
+
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Script cancelled by user."
+        exit 0
+    fi
+
+    echo "Proceeding anyway (updates skipped)..."
+    echo "──────────────────────────────────────"
+else
+    echo "No updates available. Proceeding normally..."
+    echo "──────────────────────────────────────"
 fi
 
 REPO_CLONE="https://github.com/djsflh/cachyos-setup.git"
