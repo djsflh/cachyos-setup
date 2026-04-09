@@ -17,7 +17,6 @@ echo
 mkdir -p ~/Pictures/saved
 
 echo "=== Creating wallsave script ==="
-echo
 											  
 cat > /tmp/wallsave.tmp << 'EOF'
 #!/bin/bash
