@@ -13,11 +13,11 @@ run_quiet "Installing qt5-tools" sudo pacman -S --needed qt5-tools
 echo
 
 echo "=== Creating ~/Pictures/saved directory ==="
-echo
+echo	
 mkdir -p ~/Pictures/saved
 
 echo "=== Creating wallsave script ==="
-											  
+			 
 cat > /tmp/wallsave.tmp << 'EOF'
 #!/bin/bash
 
@@ -35,13 +35,13 @@ DEST="$HOME/Pictures/saved/$FILENAME"
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
 EOF
 
-sudo tee /usr/bin/wallsave < /tmp/wallsave.tmp >/dev/null														 
+sudo tee /usr/bin/wallsave < /tmp/wallsave.tmp >/dev/null
 sudo chmod +x /usr/bin/wallsave
 rm -f /tmp/wallsave.tmp
 echo
 
-echo "=== Creating desktop shortcut ==="
-cat > ~/Desktop/Save\ Current\ Wallpaper.desktop << 'EOF'
+echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
+cat > ~/.local/share/applications/Save\ Current\ Wallpaper.desktop << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
 Comment=Save the current KDE Plasma wallpaper using original filename
@@ -52,8 +52,40 @@ Type=Application
 Categories=Utility;
 EOF
 
-chmod +x ~/Desktop/Save\ Current\ Wallpaper.desktop
-echo	
+chmod +x ~/.local/share/applications/Save\ Current\ Wallpaper.desktop
+echo
 
-echo "The script is now installed.  Run with: wallsave"
-echo "or double-click the desktop icon"
+echo "=== Adding Launcher to Plasma Task Manager ==="
+CONFIG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
+BACKUP="$CONFIG.bak"
+
+if [ -f "$CONFIG" ]; then
+    cp "$CONFIG" "$BACKUP"
+    echo
+	echo "Backup created: $BACKUP"
+    
+    # Find the launchers line and append the new entry if not already present
+    if grep -q "launchers=" "$CONFIG"; then
+        sed -i '/launchers=/ s|$|,applications:Save Current Wallpaper.desktop|' "$CONFIG"
+        echo
+		echo "Added launcher to task manager."
+    else
+        echo
+		echo "Warning: Could not find launchers= line. Manual edit may be needed."
+    fi
+else
+    echo
+	echo "Warning: plasma-org.kde.plasma.desktop-appletsrc not found. Skipping favorites update."
+fi
+echo
+
+echo "=== Restarting plasmashell to apply changes ==="
+kquitapp6 plasmashell || true
+sleep 2
+plasmashell & disown
+
+echo
+echo "=== Installation complete! ==="
+echo
+echo "Run with: wallsave"
+echo "or click the shortcut in the task manager (taskbar)."
