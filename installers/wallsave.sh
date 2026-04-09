@@ -17,7 +17,6 @@ echo
 mkdir -p ~/Pictures/saved
 
 echo "=== Creating wallsave script ==="
-	
 cat > /tmp/wallsave.tmp << 'EOF'
 #!/bin/bash
 
@@ -27,12 +26,13 @@ WALLPAPER=$(qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper
 # Remove surrounding quotes if present
 WALLPAPER=$(echo "$WALLPAPER" | sed 's/^"//;s/"$//')
 
-# Use the original filename (overwrites if same name already exists)
+# Use the original filename
 FILENAME=$(basename "$WALLPAPER")
 DEST="$HOME/Pictures/saved/$FILENAME"
 
-# Copy silently
+			   
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
+echo "Wallpaper saved to: $DEST"
 EOF
 
 sudo tee /usr/bin/wallsave < /tmp/wallsave.tmp >/dev/null
@@ -40,7 +40,7 @@ sudo chmod +x /usr/bin/wallsave
 rm -f /tmp/wallsave.tmp
 echo
 
-echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
+echo "=== Installing .desktop application to ~/.local/share/applications/==="
 mkdir -p ~/.local/share/applications
 cat > ~/.local/share/applications/Save\ Current\ Wallpaper.desktop << 'EOF'
 [Desktop Entry]
@@ -51,6 +51,7 @@ Icon=preferences-desktop-wallpaper
 Terminal=false
 Type=Application
 Categories=Utility;
+X-KDE-Shortcuts=Alt+W
 EOF
 
 chmod +x ~/.local/share/applications/Save\ Current\ Wallpaper.desktop
@@ -62,36 +63,54 @@ BACKUP="$CONFIG.bak"
 
 if [ -f "$CONFIG" ]; then
     cp "$CONFIG" "$BACKUP"
-    echo
+	echo	
     echo "Backup created: $BACKUP"
     
-    # Find the launchers line and append the new entry if not already present
+	# Find the launchers line and append the new entry if not already present																		 
     if grep -q "launchers=" "$CONFIG"; then
         if ! grep -q "Save Current Wallpaper.desktop" "$CONFIG"; then
             sed -i '/launchers=/ s|$|,applications:Save Current Wallpaper.desktop|' "$CONFIG"
 			echo
             echo "Added launcher to task manager."
         else
-            echo
-			echo "'Save Current Wallpaper' already exists in favorites."
+			echo	
+            echo "'Save Current Wallpaper' already exists in favorites."
         fi
     else
-		echo	
-        echo "Warning: Could not find launchers= line.  "
+		echo
+        echo "Warning: Could not find launchers= line."
     fi
 else
-	echo	
+	echo  
     echo "Warning: plasma-org.kde.plasma.desktop-appletsrc not found."
 fi
 echo
 
+echo "=== Setting global keyboard shortcut: Alt + W ==="
+
+SHORTCUT_FILE="$HOME/.config/kglobalshortcutsrc"
+
+# Create or update the shortcut entry
+cat >> "$SHORTCUT_FILE" << 'EOF'
+
+[Save Current Wallpaper.desktop]
+_launch=Alt+W,none,Save Current Wallpaper
+EOF
+
+# Clean up duplicate entries if any
+sed -i '/^\[Save Current Wallpaper\.desktop\]/,/^$/ {
+    /_launch=/!d
+}' "$SHORTCUT_FILE" 2>/dev/null || true
+
+echo "Global shortcut Alt + W assigned."
+
+echo
 echo "=== Restarting plasma-plasmashell service ==="
 systemctl --user restart plasma-plasmashell.service
-	   
-					
+systemctl --user restart plasma-kglobalaccel.service 2>/dev/null || true
 
 echo
 echo "=== Installation complete! ==="
 echo
-echo "Run with: wallsave"
+echo "Run with: wallsave or Alt + W
 echo "or click the shortcut in the task manager (taskbar)"
