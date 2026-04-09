@@ -64,14 +64,14 @@ Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${UID_NUM}/bus"
 WantedBy=graphical-session.target
 EOF
 
-# Write the systemd timer (every 15 minutes)
+# Write the systemd timer (every 1 minute)
 cat > "$HOME/.config/systemd/user/wallpaper-switcher.timer" <<EOF
 [Unit]
-Description=Change wallpaper every 15 minutes
+Description=Change wallpaper every 1 minute
 
 [Timer]
 OnBootSec=1min
-OnUnitActiveSec=15min
+OnUnitActiveSec=1min
 
 [Install]
 WantedBy=timers.target
