@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ── Ensure Firefox is installed ───────────────────────────────────
-run_quiet "Installing Firefox" sudo pacman -Sy --noconfirm firefox
+run_quiet "Installing Firefox" sudo pacman -Sy --noconfirm --needed firefox
 
 # ── Deploy policies.json ──────────────────────────────────────────
 POLICIES_DIR="/usr/lib/firefox/distribution"
@@ -32,20 +32,22 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "SponsoredTopSites": false,
       "Highlights": false,
       "Pocket": false,
+      "Stories": false,
       "SponsoredPocket": false,
+      "SponsoredStories": false,
       "Snippets": false,
       "Locked": false
-    },
+    }
     "UserMessaging": {
-      "WhatsNew": false,
       "ExtensionRecommendations": false,
       "FeatureRecommendations": false,
       "UrlbarInterventions": false,
       "SkipOnboarding": true,
       "MoreFromMozilla": false,
+      "FirefoxLabs": false,
       "Locked": false
-    },
-    "HttpsOnlyMode": "force_enabled",
+    }
+    "HttpsOnlyMode": "enabled",
     "DNSOverHTTPS": {
       "Enabled": true,
       "ProviderURL": "https://mozilla.cloudflare-dns.com/dns-query",
@@ -55,9 +57,25 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
     "EnableTrackingProtection": {
       "Value": true,
       "Locked": false,
-      "Cryptomining": false,
+      "Cryptomining": true,
       "Fingerprinting": true,
-      "EmailTracking": true
+      "EmailTracking": true,
+      "SuspectedFingerprinting": true,
+      "Category": "strict" | "standard",
+      "Exceptions": ["https://example.com"],
+      "BaselineExceptions": true | false,
+      "ConvenienceExceptions": true | false
+    }
+    "EnableTrackingProtection": {
+      "Value": true,
+      "Locked": false,
+      "Category": "strict",
+      "Cryptomining": true,
+      "Fingerprinting": true,
+      "EmailTracking": true,
+      "SuspectedFingerprinting": true,
+      "BaselineExceptions": false,
+      "ConvenienceExceptions": false
     }
   }
 }
@@ -133,10 +151,6 @@ echo "     • Open Firefox"
 echo "     • Go to about:addons"
 echo "     • Click uBlock Origin → check 'Run in Private Windows'"
 echo "     • Click ClearURLs   → check 'Run in Private Windows'"
-echo
-echo "  2. Pin Firefox to taskbar:"
-echo "     • Right-click Firefox in taskbar while running"
-echo "     • Select 'Pin to Task Manager'"
 echo
 echo "════════════════════════════════════════════════════"
 echo
