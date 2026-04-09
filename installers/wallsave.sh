@@ -13,11 +13,11 @@ run_quiet "Installing qt5-tools" sudo pacman -S --needed qt5-tools
 echo
 
 echo "=== Creating ~/Pictures/saved directory ==="
-echo	
+echo
 mkdir -p ~/Pictures/saved
 
 echo "=== Creating wallsave script ==="
-			 
+	
 cat > /tmp/wallsave.tmp << 'EOF'
 #!/bin/bash
 
@@ -62,30 +62,35 @@ BACKUP="$CONFIG.bak"
 if [ -f "$CONFIG" ]; then
     cp "$CONFIG" "$BACKUP"
     echo
-	echo "Backup created: $BACKUP"
+    echo "Backup created: $BACKUP"
     
     # Find the launchers line and append the new entry if not already present
     if grep -q "launchers=" "$CONFIG"; then
-        sed -i '/launchers=/ s|$|,applications:Save Current Wallpaper.desktop|' "$CONFIG"
-        echo
-		echo "Added launcher to task manager."
+        if ! grep -q "Save Current Wallpaper.desktop" "$CONFIG"; then
+            sed -i '/launchers=/ s|$|,applications:Save Current Wallpaper.desktop|' "$CONFIG"
+			echo
+            echo "Added launcher to task manager."
+        else
+            echo
+			echo "'Save Current Wallpaper' already exists in favorites."
+        fi
     else
-        echo
-		echo "Warning: Could not find launchers= line. Manual edit may be needed."
+		echo	
+        echo "Warning: Could not find launchers= line.  "
     fi
 else
-    echo
-	echo "Warning: plasma-org.kde.plasma.desktop-appletsrc not found. Skipping favorites update."
+	echo	
+    echo "Warning: plasma-org.kde.plasma.desktop-appletsrc not found."
 fi
 echo
 
-echo "=== Restarting plasmashell to apply changes ==="
-kquitapp6 plasmashell || true
-sleep 2
-plasmashell & disown
+echo "=== Restarting plasma-plasmashell service ==="
+systemctl --user restart plasma-plasmashell.service
+	   
+					
 
 echo
 echo "=== Installation complete! ==="
 echo
 echo "Run with: wallsave"
-echo "or click the shortcut in the task manager (taskbar)."
+echo "or click the shortcut in the task manager (taskbar)"
