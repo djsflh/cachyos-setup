@@ -77,6 +77,7 @@ cat > "$TMPFILE" <<'EOF'
 }
 EOF
 sudo cp "$TMPFILE" "$POLICIES_DIR/policies.json"
+sudo chmod 644 "$POLICIES_DIR/policies.json"
 rm "$TMPFILE"
 echo "  ✔ policies.json written to $POLICIES_DIR"
 
@@ -121,9 +122,9 @@ user_pref("browser.newtabpage.activity-stream.telemetry", false);
 user_pref("browser.ml.chat.enabled", false);
 user_pref("browser.ml.chat.sidebar", false);
 EOF
-    #cp "$TMPFILE" "$PROFILE_DIR/user.js"
-    #rm "$TMPFILE"
-    #echo "  ✔ user.js written to $PROFILE_DIR"
+    cp "$TMPFILE" "$PROFILE_DIR/user.js"
+    rm "$TMPFILE"
+    echo "  ✔ user.js written to $PROFILE_DIR"
 else
     echo
     echo "  ✘ WARNING: Could not find Firefox profile directory. user.js not written."
