@@ -8,7 +8,7 @@ echo "=== Creating ~/Pictures/saved directory ==="
 mkdir -p ~/Pictures/saved
 
 echo "=== Creating silent wallsave script ==="
-cat > ~/.local/bin/wallsave << 'EOF'
+sudo cat > /usr/bin/wallsave << 'EOF'
 #!/bin/bash
 
 WALLPAPER=$(qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper 0 | grep "Image: file:" | cut -c 15-)
@@ -23,7 +23,7 @@ DEST="$HOME/Pictures/saved/$FILENAME"
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
 EOF
 
-chmod +x ~/.local/bin/wallsave
+sudo chmod +x /usr/bin/wallsave
 
 echo "=== Updating desktop shortcut ==="
 cat > ~/Desktop/Save\ Current\ Wallpaper.desktop << 'EOF'
