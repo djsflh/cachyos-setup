@@ -62,9 +62,10 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
       "SuspectedFingerprinting": true,
       "BaselineExceptions": false,
       "ConvenienceExceptions": false
+    },
     "Cookies": {
-      "Locked": false,
-      "Behavior": "reject-foreign",
+      "Locked": true,
+      "Behavior": "reject-foreign"
     }
   }
 }
