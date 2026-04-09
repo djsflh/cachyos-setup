@@ -86,6 +86,12 @@ cat > "$TMPFILE" <<'EOF'
       "LinkPreviews": false,
       "TabGroups": false,
       "Locked": false
+    },
+    "AIControls": {
+      "Default": {
+        "Value": "blocked",
+        "Locked": false
+      }
     }
   }
 }
