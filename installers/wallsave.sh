@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+# Helper for cleaner output
+run_quiet() {
+    echo "=== $1 ==="
+    shift
+    "$@" >/dev/null 2>&1 || true
+}
+
 echo "=== Installing qt5-tools ==="
 run_quiet "Installing qt5-tools" sudo pacman -S --needed qt5-tools
 
@@ -12,15 +19,17 @@ echo "=== Creating silent wallsave script ==="
 cat | sudo tee /usr/bin/wallsave << 'EOF'
 #!/bin/bash
 
+# Get current wallpaper path
 WALLPAPER=$(qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper 0 | grep "Image: file:" | cut -c 15-)
 
-# Clean up quotes if present
+# Remove surrounding quotes if present
 WALLPAPER=$(echo "$WALLPAPER" | sed 's/^"//;s/"$//')
 
-# Get original filename extension and save silently (overwrites if exists)
-FILENAME="current_wallpaper$(echo "$WALLPAPER" | sed 's/.*\./\./')"
+# Use the original filename (overwrites if same name already exists)
+FILENAME=$(basename "$WALLPAPER")
 DEST="$HOME/Pictures/saved/$FILENAME"
 
+# Copy silently
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
 EOF
 
@@ -30,7 +39,7 @@ echo "=== Updating desktop shortcut ==="
 cat > ~/Desktop/Save\ Current\ Wallpaper.desktop << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
-Comment=Save the current KDE Plasma wallpaper silently
+Comment=Save the current KDE Plasma wallpaper using original filename
 Exec=wallsave
 Icon=preferences-desktop-wallpaper
 Terminal=false
@@ -43,8 +52,9 @@ chmod +x ~/Desktop/Save\ Current\ Wallpaper.desktop
 echo "=== Installation complete! ==="
 echo ""
 echo "wallsave is now completely silent."
-echo "It will always save as ~/Pictures/saved/current_wallpaper.<extension>"
-echo "and will overwrite the previous file without any messages."
+echo "It saves the wallpaper using its original filename to:"
+echo "~/Pictures/saved/"
+echo "(overwrites if a file with the same name already exists)"
 echo ""
 echo "You can run it with: wallsave"
-echo "or by clicking the desktop icon."
+echo "or by double-clicking the desktop icon."
