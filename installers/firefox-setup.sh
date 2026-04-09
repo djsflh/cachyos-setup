@@ -67,6 +67,9 @@ run_quiet "Writing Firefox policies.json" sudo tee "$POLICIES_DIR/policies.json"
     "Cookies": {
       "Locked": true,
       "Behavior": "reject-foreign"
+    },
+    "Homepage": {
+      "URL": "about:preferences#privacy"
     }
   }
 }
