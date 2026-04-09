@@ -56,7 +56,5 @@ EOF
 chmod +x ~/Desktop/Save\ Current\ Wallpaper.desktop
 echo	
 
-echo "=== Installation complete! ==="
-echo
-echo "run with: wallsave"
+echo "The script is not installed.  Run with: wallsave"
 echo "or double-click the desktop icon"
