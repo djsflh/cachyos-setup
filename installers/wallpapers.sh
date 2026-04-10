@@ -71,7 +71,7 @@ Description=Change wallpaper every 1 minute
 
 [Timer]
 OnBootSec=1min
-OnUnitActiveSec=1min
+OnUnitActiveSec=2min
 
 [Install]
 WantedBy=timers.target
