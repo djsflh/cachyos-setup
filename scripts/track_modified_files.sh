@@ -1,0 +1,75 @@
+#!/bin/bash
+# =============================================================================
+# Linux script: track_modified_files.sh
+# Purpose: Record a timestamp, let you perform a UI change, then list ALL files
+#          that were modified afterwards.
+#          Excludes noisy system directories (dev, proc, sys, run, tmp, var/log,
+#          var/cache) so you only see real config changes.
+# Usage:
+#   1. Save this as track_modified_files.sh
+#   2. chmod +x track_modified_files.sh
+#   3. ./track_modified_files.sh
+# =============================================================================
+
+echo "=== File Change Tracker ==="
+echo "This script will:"
+echo "   1. Ask where to search"
+echo "   2. Create a timestamp marker"
+echo "   3. Wait for you to make your UI change"
+echo "   4. Show every regular file modified after that moment"
+echo ""
+
+# Ask user where to search
+read -p "Enter search path (press Enter for whole filesystem /, or type e.g. /home): " SEARCH_PATH
+
+# Default to root if nothing entered
+if [ -z "$SEARCH_PATH" ]; then
+    SEARCH_PATH="/"
+fi
+
+# Safety check
+if [ ! -d "$SEARCH_PATH" ]; then
+    echo "❌ Error: '$SEARCH_PATH' is not a valid directory."
+    exit 1
+fi
+
+echo "✅ Searching in: $SEARCH_PATH"
+echo ""
+
+# Create a temporary marker file with current timestamp
+TEMP_MARKER=$(mktemp /tmp/modify_marker.XXXXXX)
+touch "$TEMP_MARKER"
+
+echo "✅ Marker created at: $TEMP_MARKER"
+echo "   (Current time is now locked in)"
+echo ""
+echo "🔄 NOW perform your UI change / setting change."
+echo "   When you are completely finished, press Enter here..."
+read -r
+
+echo ""
+echo "🔍 Scanning for changed files (this can take a minute on large paths)..."
+echo "   (Excluding /dev, /proc, /sys, /run, /tmp, /var/log, /var/cache)"
+
+# The actual search:
+#   - prune the noisy directories
+#   - only regular files (-type f)
+#   - newer than our marker
+#   - nice readable date + full path
+#   - suppress permission noise
+find "$SEARCH_PATH" \
+  \( -path /dev -o -path /proc -o -path /sys -o -path /run \
+     -o -path /tmp -o -path /var/log -o -path /var/cache \) \
+  -prune -o \
+  -type f -newer "$TEMP_MARKER" \
+  -printf '%TY-%Tm-%Td %TH:%TM  %p\n' 2>/dev/null | sort
+
+echo ""
+echo "✅ Done!"
+echo "Any files listed above were modified by your UI action."
+echo "You can now inspect them (most config files are in /etc, ~/.config, /home/*/.*rc, etc.)."
+echo ""
+
+# Clean up the marker
+rm -f "$TEMP_MARKER"
+echo "Marker file removed."
