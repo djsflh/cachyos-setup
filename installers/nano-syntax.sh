@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo
 run_quiet "Installing nano-syntax packages" sudo pacman -Sy --noconfirm nano-syntax-highlighting
 
 LINE='include "/usr/share/nano-syntax-highlighting/*.nanorc"'
