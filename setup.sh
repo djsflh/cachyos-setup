@@ -39,6 +39,7 @@ else
 fi
 
 echo
+echo
 echo "=== Checking for system updates ==="
 
 if checkupdates > /dev/null 2>&1 && [[ $(checkupdates | wc -l) -gt 0 ]]; then
