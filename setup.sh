@@ -1,26 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "=== Checking for system updates ==="
-
-if checkupdates > /dev/null 2>&1 && [[ $(checkupdates | wc -l) -gt 0 ]]; then
-    echo "Updates are available!"
-    echo ""
-    read -p "Do you want to proceed with the script anyway? (y/N): " -n 1 -r </dev/tty
-    echo   # move to a new line
-    
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo "Script cancelled by user."
-        exit 0
-    fi
-    
-    echo "Proceeding anyway (updates skipped)..."
-    echo "──────────────────────────────────────"
-    else
-    echo "No updates available. Proceeding normally..."
-    echo "──────────────────────────────────────"
-fi
-
 REPO_CLONE="https://github.com/djsflh/cachyos-setup.git"
 INSTALL_DIR="$HOME/cachyos-setup"
 LOGFILE="$HOME/cachyos-setup-install.log"
@@ -56,6 +36,26 @@ if [ ! -d "$INSTALL_DIR" ]; then
 else
     echo "Repo already exists, pulling latest..."
     git -C "$INSTALL_DIR" pull
+fi
+
+echo "=== Checking for system updates ==="
+
+if checkupdates > /dev/null 2>&1 && [[ $(checkupdates | wc -l) -gt 0 ]]; then
+    echo "Updates are available!"
+    echo ""
+    read -p "Do you want to proceed with the script anyway? (y/N): " -n 1 -r </dev/tty
+    echo   # move to a new line
+    
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Script cancelled by user."
+        exit 0
+    fi
+    
+    echo "Proceeding anyway (updates skipped)..."
+    echo "──────────────────────────────────────"
+    else
+    echo "No updates available. Proceeding normally..."
+    echo "──────────────────────────────────────"
 fi
 
 cd "$INSTALL_DIR"
