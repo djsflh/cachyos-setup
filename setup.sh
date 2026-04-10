@@ -6,7 +6,7 @@ echo "=== Checking for system updates ==="
 if checkupdates > /dev/null 2>&1 && [[ $(checkupdates | wc -l) -gt 0 ]]; then
     echo "Updates are available!"
     echo ""
-    read -p "Do you want to proceed with the script anyway? (y/N): " -n 1 -r
+    read -p "Do you want to proceed with the script anyway? (y/N): " -n 1 -r </dev/tty
     echo   # move to a new line
     
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
