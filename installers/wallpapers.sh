@@ -51,12 +51,8 @@ EOF
     echo "  ✔ KDE slideshow config written"
 
     # Reload KDE Plasma to apply changes
-    echo "  → Reloading KDE Plasma..."
-    if qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.refreshCurrentShell 2>/dev/null; then
-        echo "  ✔ KDE Plasma reloaded"
-    else
-        echo "  ⚠ Could not reload via qdbus — you may need to log out and back in"
-    fi
+    systemctl --user restart plasma-plasmashell.service
+    
 fi
 
 echo
