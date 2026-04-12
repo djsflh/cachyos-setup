@@ -3,10 +3,11 @@ set -e
 
 echo "=== Creating ~/Pictures/saved directory ==="
 echo
-mkdir -p ~/Pictures/saved
+mkdir -p "$HOME/Pictures/saved"
 
 echo "=== Creating wallsave script ==="
 
+mkdir -p "$HOME/.local/bin"
 cat > "$HOME/.local/bin/wallsave" << 'EOF'
 #!/bin/bash
 
