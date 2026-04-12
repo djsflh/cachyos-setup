@@ -38,7 +38,7 @@ mkdir -p ~/.local/share/applications
 cat > "$HOME/.local/share/applications/Save Current Wallpaper.desktop" << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
-Comment=Save the current KDE Plasma wallpaper using original filename
+Comment=Save the current KDE Plasma wallpaper
 Exec=wallsave
 Icon=preferences-desktop-wallpaper
 Terminal=false
