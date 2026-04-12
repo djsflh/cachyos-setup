@@ -65,6 +65,9 @@ _k_friendly_name=Delete Current Wallpaper
 _launch=Alt+D,none,$HOME/.local/bin/walldelete
 EOF
 
+chmod +x "$HOME/.local/bin/wallsave"
+echo
+
 echo "=== Restarting plasma-plasmashell service ==="
 systemctl --user restart plasma-plasmashell.service
 
