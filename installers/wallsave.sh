@@ -1,40 +1,29 @@
 #!/bin/bash
 set -e
 
-echo
-run_quiet "Installing qt5-tools" sudo pacman -S --needed qt5-tools
-echo
-
 echo "=== Creating ~/Pictures/saved directory ==="
 echo
 mkdir -p ~/Pictures/saved
 
 echo "=== Creating wallsave script ==="
 
-cat > /tmp/wallsave.tmp << 'EOF'
+cat > "$HOME/.local/bin/wallsave" << 'EOF'
 #!/bin/bash
 
 # Get current wallpaper path
-WALLPAPER=$(qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper 0 | grep "Image: file:" | cut -c 15-)
+WALLPAPER=$(busctl --user call org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell wallpaper u 0 | grep -o 'Image" s "file://[^"]*' | sed 's|Image" s "file://||' | sed 's|"||g')
 
-# Remove surrounding quotes if present
-WALLPAPER=$(echo "$WALLPAPER" | sed 's/^"//;s/"$//')
-
-# Use the original filename (overwrites if same name already exists)
 FILENAME=$(basename "$WALLPAPER")
 DEST="$HOME/Pictures/saved/$FILENAME"
 
-# Copy silently
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
 EOF
 
-sudo tee /usr/bin/wallsave < /tmp/wallsave.tmp >/dev/null
-sudo chmod +x /usr/bin/wallsave
-rm -f /tmp/wallsave.tmp
+chmod +x "$HOME/.local/bin/wallsave"
 echo
 
 echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
-mkdir -p ~/.local/share/applications
+mkdir -p "$HOME/.local/share/applications"
 cat > "$HOME/.local/share/applications/Save Current Wallpaper.desktop" << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
