@@ -3,42 +3,27 @@ set -e
 
 echo "=== Creating walldelete script ==="
 
-cat > /tmp/walldelete.tmp << 'EOF'
+cat > "$HOME/.local/bin/walldelete" << 'EOF'
 #!/bin/bash
 
 # Get current wallpaper path
-WALLPAPER=$(qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.wallpaper 0 | grep "Image: file:" | cut -c 15-)
-
-# Remove surrounding quotes if present
-WALLPAPER=$(echo "$WALLPAPER" | sed 's/^"//;s/"$//')
-
-if [[ -z "$WALLPAPER" ]]; then
-    echo "Could not determine current wallpaper path."
-    exit 1
-fi
-
-if [[ ! -f "$WALLPAPER" ]]; then
-    echo "File not found: $WALLPAPER"
-    exit 1
-fi
+WALLPAPER=$(busctl --user call org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell wallpaper u 0 | grep -o 'Image" s "file://[^"]*' | sed 's|Image" s "file://||' | sed 's|"||g')
 
 echo "Deleting: $WALLPAPER"
 rm "$WALLPAPER"
 echo "Deleted."
 EOF
 
-sudo tee /usr/bin/walldelete < /tmp/walldelete.tmp >/dev/null
-sudo chmod +x /usr/bin/walldelete
-rm -f /tmp/walldelete.tmp
+chmod +x "$HOME/.local/bin/wallsave"
 echo
 
 echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
-mkdir -p ~/.local/share/applications
+mkdir -p "$HOME/.local/share/applications"
 cat > "$HOME/.local/share/applications/Delete Current Wallpaper.desktop" << 'EOF'
 [Desktop Entry]
 Name=Delete Current Wallpaper
 Comment=Delete the current KDE Plasma wallpaper
-Exec=walldelete
+Exec=$HOME/.local/bin/walldelete
 Icon=user-trash
 Terminal=false
 Type=Application
@@ -54,9 +39,9 @@ BACKUP="$CONFIG.bak"
 
 if [ -f "$CONFIG" ]; then
     cp "$CONFIG" "$BACKUP"
-    echo "Backup created: $BACKUP"
     echo
-
+    echo "Backup created: $BACKUP"
+    # Find the launchers line and append the new entry if not already present
     if grep -q "launchers=" "$CONFIG"; then
         if ! grep -q "Delete Current Wallpaper.desktop" "$CONFIG"; then
             sed -i '/launchers=/ s|$|,applications:Delete Current Wallpaper.desktop|' "$CONFIG"
@@ -65,12 +50,20 @@ if [ -f "$CONFIG" ]; then
             echo "'Delete Current Wallpaper' already exists in favorites."
         fi
     else
-        echo "Warning: Could not find launchers= line."
+        echo "Warning: Could not find launchers= line.  "
     fi
 else
     echo "Warning: plasma-org.kde.plasma.desktop-appletsrc not found."
 fi
 echo
+
+echo "=== Adding Keyboard Shortcut Alt + D ==="
+
+cat > "$HOME/.config/kglobalshortcutsrc" << 'EOF'
+[Delete Current Wallpaper.desktop]
+_k_friendly_name=Delete Current Wallpaper
+_launch=Alt+D,none,$HOME/.local/bin/walldelete
+EOF
 
 echo "=== Restarting plasma-plasmashell service ==="
 systemctl --user restart plasma-plasmashell.service
