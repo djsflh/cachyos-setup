@@ -68,6 +68,17 @@ else
 fi
 echo
 
+echo "=== Adding Keyboard Shortcut Alt + W ==="
+
+cat > "$HOME/.config/kglobalshortcutsrc" << 'EOF'
+[Save Current Wallpaper.desktop]
+_k_friendly_name=Save Current Wallpaper
+_launch=Alt+W,none,$HOME/.local/bin/wallsave
+EOF
+
+chmod +x "$HOME/.local/bin/wallsave"
+echo
+
 echo "=== Restarting plasma-plasmashell service ==="
 systemctl --user restart plasma-plasmashell.service
 	   
