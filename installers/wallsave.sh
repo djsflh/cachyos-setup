@@ -42,7 +42,7 @@ echo
 
 echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
 mkdir -p ~/.local/share/applications
-cat > ~/.local/share/applications/Save\ Current\ Wallpaper.desktop << 'EOF'
+cat > "$HOME/.local/share/applications/Save Current Wallpaper.desktop" << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
 Comment=Save the current KDE Plasma wallpaper using original filename
@@ -53,7 +53,7 @@ Type=Application
 Categories=Utility;
 EOF
 
-chmod +x ~/.local/share/applications/Save\ Current\ Wallpaper.desktop
+chmod +x "$HOME/.local/share/applications/Save Current Wallpaper.desktop"
 echo
 
 echo "=== Adding Launcher to Plasma Task Manager ==="
