@@ -1,13 +1,6 @@
 #!/bin/bash
 set -e
 
-# Helper for cleaner output
-run_quiet() {
-    echo "=== $1 ==="
-    shift
-    "$@" >/dev/null 2>&1 || true
-}
-
 echo
 run_quiet "Installing qt5-tools" sudo pacman -S --needed qt5-tools
 echo
