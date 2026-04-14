@@ -1,14 +1,14 @@
 #!/bin/bash
 # =============================================================================
-# Linux script: track_modified_files.sh
+# Linux script: track_modified_files
 # Purpose: Record a timestamp, let you perform a UI change, then list ALL files
 #          that were modified afterwards.
 #          Excludes noisy system directories (dev, proc, sys, run, tmp, var/log,
 #          var/cache) so you only see real config changes.
 # Usage:
-#   1. Save this as track_modified_files.sh
-#   2. chmod +x track_modified_files.sh
-#   3. ./track_modified_files.sh
+#   1. Save this as track_modified_files
+#   2. chmod +x track_modified_files
+#   3. ./track_modified_files
 # =============================================================================
 
 echo "=== File Change Tracker ==="
