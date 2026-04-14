@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Shows the explicity installed packages, relative to a fresh CachyOS installation.  Use pacman -Qq instead to see depencendices also.
+
 comm -23 <(pacman -Qqe|sort) <(cat<<'EOF'|sort
 a52dec
 aalib
