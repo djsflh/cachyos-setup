@@ -85,6 +85,7 @@ if [ -f "$CONFIG" ]; then
     echo "===Added global keyboard shortcut: Alt + D to delete current wallpaper.==="
 
     chmod +x "$HOME/.local/bin/walldelete"
+fi
 else
     echo "===Warning: kglobalshortcutsrc not found.==="
 fi

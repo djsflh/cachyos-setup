@@ -98,6 +98,7 @@ if [ -f "$CONFIG" ]; then
     echo "===Added global keyboard shortcut: Alt + W to save current wallpaper.==="
 
     chmod +x "$HOME/.local/bin/wallsave"
+fi
 else
     echo "===Warning: kglobalshortcutsrc not found.==="
 fi
