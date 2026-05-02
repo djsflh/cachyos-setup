@@ -89,12 +89,8 @@ if [ -f "$CONFIG_KGLOBAL" ]; then
     echo "===Backup created: $BACKUP_KGLOBAL==="
 fi
 
-if ! command -v kwriteconfig5 &>/dev/null; then
-    sudo pacman -S --noconfirm kde-cli-tools
-fi
-
-kwriteconfig5 --file "$CONFIG_KGLOBAL" --group "Save Current Wallpaper.desktop" --key "_k_friendly_name" "Save Current Wallpaper"
-kwriteconfig5 --file "$CONFIG_KGLOBAL" --group "Save Current Wallpaper.desktop" --key "_launch" "Alt+W,none,$HOME/.local/bin/wallsave"
+kwriteconfig6 --file "$CONFIG_KGLOBAL" --group "Save Current Wallpaper.desktop" --key "_k_friendly_name" "Save Current Wallpaper"
+kwriteconfig6 --file "$CONFIG_KGLOBAL" --group "Save Current Wallpaper.desktop" --key "_launch" "Alt+W,none,$HOME/.local/bin/wallsave"
 
 echo "===Added global keyboard shortcut: Alt + W to save current wallpaper.==="
 

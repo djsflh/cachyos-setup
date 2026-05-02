@@ -76,12 +76,8 @@ if [ -f "$CONFIG_KGLOBAL" ]; then
     echo "===Backup created: $BACKUP_KGLOBAL==="
 fi
 
-if ! command -v kwriteconfig5 &>/dev/null; then
-    sudo pacman -S --noconfirm kde-cli-tools
-fi
-
-kwriteconfig5 --file "$CONFIG_KGLOBAL" --group "Delete Current Wallpaper.desktop" --key "_k_friendly_name" "Delete Current Wallpaper"
-kwriteconfig5 --file "$CONFIG_KGLOBAL" --group "Delete Current Wallpaper.desktop" --key "_launch" "Alt+D,none,$HOME/.local/bin/walldelete"
+kwriteconfig6 --file "$CONFIG_KGLOBAL" --group "Delete Current Wallpaper.desktop" --key "_k_friendly_name" "Delete Current Wallpaper"
+kwriteconfig6 --file "$CONFIG_KGLOBAL" --group "Delete Current Wallpaper.desktop" --key "_launch" "Alt+D,none,$HOME/.local/bin/walldelete"
 
 echo "===Added global keyboard shortcut: Alt + D to delete current wallpaper.==="
 
