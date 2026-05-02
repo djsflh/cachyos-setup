@@ -40,8 +40,9 @@ else
 fi
 echo
 
-echo "=== Restarting plasma-plasmashell service ==="
-systemctl --user restart plasma-plasmashell.service
+echo "=== Installation complete! Restart Plasma to apply changes ==="
+#echo "=== Restarting plasma-plasmashell service ==="
+#systemctl --user restart plasma-plasmashell.service
 
 echo
 echo "=== Configuration complete! ==="

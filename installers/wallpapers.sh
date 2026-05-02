@@ -48,10 +48,10 @@ SlideInterval=120
 SlidePaths=/usr/share/wallpapers/,$WALLPAPER_DEST/
 EOF
 
-    echo "  ✔ KDE slideshow config written"
+    echo "  ✔ KDE slideshow config written. Restart Plasma to apply changes."
 
     # Reload KDE Plasma to apply changes
-    systemctl --user restart plasma-plasmashell.service
+    #systemctl --user restart plasma-plasmashell.service
     
 fi
 

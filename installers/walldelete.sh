@@ -68,8 +68,9 @@ EOF
 chmod +x "$HOME/.local/bin/walldelete"
 echo
 
-echo "=== Restarting plasma-plasmashell service ==="
-systemctl --user restart plasma-plasmashell.service
+echo "=== Installation complete! Restart Plasma to apply changes ==="
+#echo "=== Restarting plasma-plasmashell service ==="
+#systemctl --user restart plasma-plasmashell.service
 
 echo
 echo "=== Installation complete! ==="
