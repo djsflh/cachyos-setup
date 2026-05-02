@@ -68,7 +68,16 @@ fi
 echo
 
 # Add Keyboard Shortcut Alt + D
-cat > "$HOME/.config/kglobalshortcutsrc" << 'EOF'
+CONFIG="$HOME/.config/kglobalshortcutsrc"
+BACKUP="$CONFIG.d.bak"
+
+if [ -f "$CONFIG" ]; then
+    cp "$CONFIG" "$BACKUP"
+    echo "===Backup created: $BACKUP==="
+
+cat >> "$HOME/.config/kglobalshortcutsrc" << 'EOF'
+
+
 [Delete Current Wallpaper.desktop]
 _k_friendly_name=Delete Current Wallpaper
 _launch=Alt+D,none,$HOME/.local/bin/walldelete

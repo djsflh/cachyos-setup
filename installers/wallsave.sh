@@ -81,7 +81,16 @@ fi
 echo
 
 # Add Keyboard Shortcut Alt + W
-cat > "$HOME/.config/kglobalshortcutsrc" << 'EOF'
+CONFIG="$HOME/.config/kglobalshortcutsrc"
+BACKUP="$CONFIG.s.bak"
+
+if [ -f "$CONFIG" ]; then
+    cp "$CONFIG" "$BACKUP"
+    echo "===Backup created: $BACKUP==="
+
+cat >> "$HOME/.config/kglobalshortcutsrc" << 'EOF'
+
+
 [Save Current Wallpaper.desktop]
 _k_friendly_name=Save Current Wallpaper
 _launch=Alt+W,none,$HOME/.local/bin/wallsave
