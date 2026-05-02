@@ -68,15 +68,17 @@ fi
 echo
 
 # Add Keyboard Shortcut Alt + D
-cat >> "$HOME/.config/kglobalshortcutsrc" << 'EOF'
+CONFIG_KGLOBAL="$HOME/.config/kglobalshortcutsrc"
+BACKUP_KGLOBAL="$CONFIG_KGLOBAL.bak"
 
+if [ -f "$CONFIG_KGLOBAL" ]; then
+    cp "$CONFIG_KGLOBAL" "$BACKUP_KGLOBAL"
+    echo "===Backup created: $BACKUP_KGLOBAL==="
+fi
 
-[Delete Current Wallpaper.desktop]
-_k_friendly_name=Delete Current Wallpaper
-_launch=Alt+D,none,$HOME/.local/bin/walldelete
-EOF
+kwriteconfig5 --file "$CONFIG_KGLOBAL" --group "Delete Current Wallpaper.desktop" --key "_k_friendly_name" "Delete Current Wallpaper"
+kwriteconfig5 --file "$CONFIG_KGLOBAL" --group "Delete Current Wallpaper.desktop" --key "_launch" "Alt+D,none,$HOME/.local/bin/walldelete"
 
-chmod +x "$HOME/.local/bin/walldelete"
 echo "===Added global keyboard shortcut: Alt + D to delete current wallpaper.==="
 
 echo "=== Delete Current Wallpaper installed successfully! Restart Plasma to apply changes ==="
