@@ -84,12 +84,12 @@ echo
 cat >> "$HOME/.config/kglobalshortcutsrc" << 'EOF'
 
 
-    [Save Current Wallpaper.desktop]
-    _k_friendly_name=Save Current Wallpaper
-    _launch=Alt+W,none,$HOME/.local/bin/wallsave
-    EOF
+[Save Current Wallpaper.desktop]
+_k_friendly_name=Save Current Wallpaper
+_launch=Alt+W,none,$HOME/.local/bin/wallsave
+EOF
     
-    chmod +x "$HOME/.local/bin/wallsave"
-    echo "===Added global keyboard shortcut: Alt + W to save current wallpaper.==="
-    
+chmod +x "$HOME/.local/bin/wallsave"
+echo "===Added global keyboard shortcut: Alt + W to save current wallpaper.==="
+
 echo "=== Save Current Wallpaper installed successfully! Restart Plasma to apply changes ==="
