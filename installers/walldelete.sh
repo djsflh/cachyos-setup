@@ -1,7 +1,13 @@
 #!/bin/bash
 set -e
 
-echo "=== Creating walldelete script ==="
+BIN_DIR="$HOME/.local/bin"
+if [[ ! -d "$BIN_DIR" ]]; then
+    mkdir -p "$BIN_DIR"
+    echo "===Created directory: $BIN_DIR==="
+else
+    echo "===Directory already exists: $BIN_DIR==="
+fi
 
 cat > "$HOME/.local/bin/walldelete" << 'EOF'
 #!/bin/bash
@@ -9,17 +15,23 @@ cat > "$HOME/.local/bin/walldelete" << 'EOF'
 # Get current wallpaper path
 WALLPAPER=$(busctl --user call org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell wallpaper u 0 | grep -o 'Image" s "file://[^"]*' | sed 's|Image" s "file://||' | sed 's|"||g')
 
-echo "Deleting: $WALLPAPER"
 rm "$WALLPAPER"
-echo "Deleted."
+echo "Deleted $WALLPAPER."
 EOF
 
-chmod +x "$HOME/.local/bin/wallsave"
-echo
+chmod +x "$HOME/.local/bin/walldelete"
 
-echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
-mkdir -p "$HOME/.local/share/applications"
-cat > "$HOME/.local/share/applications/Delete Current Wallpaper.desktop" << 'EOF'
+# install .desktop application to ~/.local/share/applications/
+APP_DIR="$HOME/.local/share/applications"
+
+if [[ ! -d "$APP_DIR" ]]; then
+    mkdir -p "$APP_DIR"
+    echo "===Created directory: $APP_DIR==="
+else
+    echo "===Directory already exists: $APP_DIR==="
+fi
+
+cat > "$APP_DIR/Delete Current Wallpaper.desktop" << 'EOF'
 [Desktop Entry]
 Name=Delete Current Wallpaper
 Comment=Delete the current KDE Plasma wallpaper
@@ -30,50 +42,39 @@ Type=Application
 Categories=Utility;
 EOF
 
-chmod +x "$HOME/.local/share/applications/Delete Current Wallpaper.desktop"
-echo
+chmod +x "$APP_DIR/Delete Current Wallpaper.desktop"
+echo "===Created desktop entry for Delete Current Wallpaper==="
 
-echo "=== Adding Launcher to Plasma Task Manager ==="
-CONFIG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
+CONFIG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" 
 BACKUP="$CONFIG.bak"
 
 if [ -f "$CONFIG" ]; then
     cp "$CONFIG" "$BACKUP"
-    echo
-    echo "Backup created: $BACKUP"
+    echo "===Backup created: $BACKUP==="
     # Find the launchers line and append the new entry if not already present
     if grep -q "launchers=" "$CONFIG"; then
         if ! grep -q "Delete Current Wallpaper.desktop" "$CONFIG"; then
             sed -i '/launchers=/ s|$|,applications:Delete Current Wallpaper.desktop|' "$CONFIG"
-            echo "Added launcher to task manager."
+            echo "===Added launcher to Plasma Task Manager.==="
         else
-            echo "'Delete Current Wallpaper' already exists in favorites."
+            echo "===Delete Current Wallpaper' launcher already exists in Plasma Task Manager.==="
         fi
     else
-        echo "Warning: Could not find launchers= line.  "
+        echo "===Warning: Could not find launchers= line.==="
     fi
 else
-    echo "Warning: plasma-org.kde.plasma.desktop-appletsrc not found."
+    echo "===Warning: plasma-org.kde.plasma.desktop-appletsrc not found.==="
 fi
 echo
 
-echo "=== Adding Keyboard Shortcut Alt + D ==="
-
+# Add Keyboard Shortcut Alt + D
 cat > "$HOME/.config/kglobalshortcutsrc" << 'EOF'
 [Delete Current Wallpaper.desktop]
 _k_friendly_name=Delete Current Wallpaper
 _launch=Alt+D,none,$HOME/.local/bin/walldelete
 EOF
+echo "===Added global keyboard shortcut: Alt + D to delete current wallpaper.==="
 
 chmod +x "$HOME/.local/bin/walldelete"
-echo
 
-echo "=== Installation complete! Restart Plasma to apply changes ==="
-#echo "=== Restarting plasma-plasmashell service ==="
-#systemctl --user restart plasma-plasmashell.service
-
-echo
-echo "=== Installation complete! ==="
-echo
-echo "Run with: walldelete"
-echo "or click the shortcut in the task manager (taskbar)"
+echo "=== Delete Current Wallpaper installed successfully! Restart Plasma to apply changes ==="

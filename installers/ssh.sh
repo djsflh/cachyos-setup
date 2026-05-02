@@ -1,24 +1,12 @@
 #!/bin/bash
 
-echo
-echo "Installing openssh"
-echo "   sudo pacman -Sy --noconfirm openssh"
-run_quiet "Installing openssh" sudo pacman -Sy --noconfirm openssh >> "$LOGFILE" 2>&1
-echo
+sudo pacman -S --noconfirm openssh
+echo "===OpenSSH installed==="
 
-echo "Enabling sshd"
-echo "   sudo systemctl enable sshd"
-sudo systemctl enable sshd
-echo
+sudo systemctl enable --now sshd
+echo "===SSH service enabled and started==="
 
-echo "Starting sshd"
-echo "   sudo systemctl start sshd"
-sudo systemctl start sshd
-echo
-
-echo "Allowing 192.168.1.51 in firewall"
-echo "   sudo ufw allow from 192.168.1.51 to any port 22 proto tcp"
 sudo ufw allow from 192.168.1.51 to any port 22 proto tcp
-echo
+echo "===Created UFW rule for 192.168.1.51==="
 
-echo "SSH enabled and started."
+echo "===SSH setup complete.==="

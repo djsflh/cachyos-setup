@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # ── Ensure Firefox is installed ───────────────────────────────────
-run_quiet "Installing Firefox" sudo pacman -Sy --noconfirm --needed firefox
+sudo pacman -S --noconfirm --needed firefox
+echo "===Firefox installed==="
 
 # ── Deploy policies.json ──────────────────────────────────────────
 POLICIES_DIR="/usr/lib/firefox/distribution"
 sudo mkdir -p "$POLICIES_DIR"
 
-echo "  → Writing Firefox policies.json..."
 TMPFILE=$(mktemp)
 cat > "$TMPFILE" <<'EOF'
 {
@@ -99,20 +99,19 @@ EOF
 sudo cp "$TMPFILE" "$POLICIES_DIR/policies.json"
 sudo chmod 644 "$POLICIES_DIR/policies.json"
 rm "$TMPFILE"
-echo "  ✔ policies.json written to $POLICIES_DIR"
+echo "===Wrote policies.json for Firefox==="
 
 # ── Find or create Firefox profile ───────────────────────────────
 PROFILE_DIR=$(find "$HOME/.config/mozilla/firefox" "$HOME/.mozilla/firefox" -maxdepth 1 -name "*.default-release" 2>/dev/null | head -n 1)
 
 if [ -z "$PROFILE_DIR" ]; then
-    echo "  → Creating Firefox profile..."
     timeout 5 firefox --headless 2>/dev/null || true
     PROFILE_DIR=$(find "$HOME/.config/mozilla/firefox" "$HOME/.mozilla/firefox" -maxdepth 1 -name "*.default-release" 2>/dev/null | head -n 1)
+    echo "===Launched Firefox headlessly to create profile==="
 fi
 
 # ── Write user.js ─────────────────────────────────────────────────
 if [ -n "$PROFILE_DIR" ]; then
-    echo "  → Writing Firefox user.js..."
     TMPFILE=$(mktemp)
     cat > "$TMPFILE" <<'EOF'
 // Strict tracking protection
@@ -140,11 +139,9 @@ user_pref("browser.newtabpage.activity-stream.telemetry", false);
 EOF
     cp "$TMPFILE" "$PROFILE_DIR/user.js"
     rm "$TMPFILE"
-    echo "  ✔ user.js written to $PROFILE_DIR"
+    echo "===Wrote user.js for Firefox==="
 else
-    echo
-    echo "  ✘ WARNING: Could not find Firefox profile directory. user.js not written."
-    echo "    Launch Firefox once manually, then re-run this installer."
+    echo "===WARNING: Could not find Firefox profile directory. user.js not written.==="
 fi
 
 # ── Manual steps reminder ─────────────────────────────────────────
@@ -153,11 +150,8 @@ echo "════════════════════════�
 echo "  Firefox setup complete — 1 manual step required: "
 echo "════════════════════════════════════════════════════"
 echo
-echo "  1. Enable extensions in Private Windows:"
-echo "     • Open Firefox"
-echo "     • Go to about:addons"
-echo "     • Click uBlock Origin → check 'Run in Private Windows'"
-echo "     • Click ClearURLs   → check 'Run in Private Windows'"
+echo "     • uBlock Origin → check 'Run in Private Windows'"
+echo "     • ClearURLs   → check 'Run in Private Windows'"
 echo
 echo "════════════════════════════════════════════════════"
 echo

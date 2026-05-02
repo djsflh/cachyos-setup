@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# Synchronize scripts from cachyos-setup/scripts to ~/.local/bin with a "-git" suffix
-
 SOURCE_DIR="$HOME/cachyos-setup/scripts"
 DEST_DIR="$HOME/.local/bin"
 
-# Create destination directory if it doesn't exist
-mkdir -p "$DEST_DIR"
+if [[ ! -d "$DEST_DIR" ]]; then
+    mkdir -p "$DEST_DIR"
+    echo "===Created directory: $DEST_DIR==="
+else
+    echo "===Directory already exists: $DEST_DIR==="
+fi
 
 # ── Helper: prompt before overwrite ──────────────────────────────
 confirm_overwrite() {
@@ -18,12 +20,9 @@ confirm_overwrite() {
     return 0  # file doesn't exist, no prompt needed
 }
 
-# ── Build list of expected destination files ──────────────────────
-declare -a EXPECTED_DEST_FILES
+declare -a EXPECTED_DEST_FILES # declare an array to hold expected filenames
 
 # ── Copy scripts ──────────────────────────────────────────────────
-echo "Syncing scripts from $SOURCE_DIR to $DEST_DIR..."
-
 for script in "$SOURCE_DIR"/*; do
     [[ -f "$script" ]] || continue
 
@@ -44,16 +43,13 @@ for script in "$SOURCE_DIR"/*; do
     if confirm_overwrite "$dest"; then
         cp "$script" "$dest"
         chmod +x "$dest"
-        echo "  ✔ $filename → $dest_name"
+        echo "===$filename → $dest_name==="
     else
-        echo "  ⊘ Skipped $filename"
+        echo "===Skipped $filename==="
     fi
 done
 
 # ── Remove scripts no longer in repo ─────────────────────────────
-echo ""
-echo "Checking for stale scripts to remove..."
-
 for existing in "$DEST_DIR"/*-git "$DEST_DIR"/*-git.*; do
     [[ -f "$existing" ]] || continue
     existing_name=$(basename "$existing")
@@ -68,12 +64,11 @@ for existing in "$DEST_DIR"/*-git "$DEST_DIR"/*-git.*; do
         read -rp "  Remove stale script $existing_name? (y/N): " answer </dev/tty
         if [[ "${answer^^}" == "Y" ]]; then
             rm "$existing"
-            echo "  ✔ Removed $existing_name"
+            echo "===Removed $existing_name==="
         else
-            echo "  ⊘ Kept $existing_name"
+            echo "===Kept $existing_name==="
         fi
     fi
 done
 
-echo ""
-echo "Script sync complete."
+echo "===Script sync complete.==="

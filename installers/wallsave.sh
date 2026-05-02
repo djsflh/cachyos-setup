@@ -1,31 +1,50 @@
 #!/bin/bash
 set -e
 
-echo "=== Creating ~/Pictures/saved directory ==="
-echo
-mkdir -p "$HOME/Pictures/saved"
+SAVED_DIR="$HOME/Pictures/saved"
+if [[ ! -d "$SAVED_DIR" ]]; then
+    mkdir -p "$SAVED_DIR"
+    echo "===Created directory: $SAVED_DIR==="
+else
+    echo "===Directory already exists: $SAVED_DIR==="
+fi
 
-echo "=== Creating wallsave script ==="
+BIN_DIR="$HOME/.local/bin"
+if [[ ! -d "$BIN_DIR" ]]; then
+    mkdir -p "$BIN_DIR"
+    echo "===Created directory: $BIN_DIR==="
+else
+    echo "===Directory already exists: $BIN_DIR==="
+fi
 
-mkdir -p "$HOME/.local/bin"
 cat > "$HOME/.local/bin/wallsave" << 'EOF'
 #!/bin/bash
 
 # Get current wallpaper path
 WALLPAPER=$(busctl --user call org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell wallpaper u 0 | grep -o 'Image" s "file://[^"]*' | sed 's|Image" s "file://||' | sed 's|"||g')
 
+# Get the filename from the wallpaper path
 FILENAME=$(basename "$WALLPAPER")
+
 DEST="$HOME/Pictures/saved/$FILENAME"
 
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
+echo "Saved $WALLPAPER to $DEST."
 EOF
 
 chmod +x "$HOME/.local/bin/wallsave"
-echo
 
-echo "=== Installing .desktop application to ~/.local/share/applications/ ==="
-mkdir -p "$HOME/.local/share/applications"
-cat > "$HOME/.local/share/applications/Save Current Wallpaper.desktop" << 'EOF'
+# install .desktop application to ~/.local/share/applications/
+APP_DIR="$HOME/.local/share/applications"
+
+if [[ ! -d "$APP_DIR" ]]; then
+    mkdir -p "$APP_DIR"
+    echo "===Created directory: $APP_DIR==="
+else
+    echo "===Directory already exists: $APP_DIR==="
+fi
+
+cat > "$APP_DIR/Save Current Wallpaper.desktop" << 'EOF'
 [Desktop Entry]
 Name=Save Current Wallpaper
 Comment=Save the current KDE Plasma wallpaper
@@ -36,57 +55,39 @@ Type=Application
 Categories=Utility;
 EOF
 
-chmod +x "$HOME/.local/share/applications/Save Current Wallpaper.desktop"
-echo
+chmod +x "$APP_DIR/Save Current Wallpaper.desktop"
+echo "===Created desktop entry for Save Current Wallpaper==="
 
-echo "=== Adding Launcher to Plasma Task Manager ==="
 CONFIG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
 BACKUP="$CONFIG.bak"
 
 if [ -f "$CONFIG" ]; then
     cp "$CONFIG" "$BACKUP"
-    echo
-    echo "Backup created: $BACKUP"
-    
+    echo "===Backup created: $BACKUP==="
     # Find the launchers line and append the new entry if not already present
     if grep -q "launchers=" "$CONFIG"; then
         if ! grep -q "Save Current Wallpaper.desktop" "$CONFIG"; then
             sed -i '/launchers=/ s|$|,applications:Save Current Wallpaper.desktop|' "$CONFIG"
-			echo
-            echo "Added launcher to task manager."
+            echo "===Added launcher to Plasma Task Manager.==="
         else
-            echo
-			echo "'Save Current Wallpaper' already exists in favorites."
+			echo "===Save Current Wallpaper' launcher already exists in Plasma Task Manager.==="
         fi
     else
-		echo	
-        echo "Warning: Could not find launchers= line.  "
+        echo "===Warning: Could not find launchers= line.==="
     fi
 else
-	echo	
-    echo "Warning: plasma-org.kde.plasma.desktop-appletsrc not found."
+    echo "===Warning: plasma-org.kde.plasma.desktop-appletsrc not found.==="
 fi
 echo
 
-echo "=== Adding Keyboard Shortcut Alt + W ==="
-
+# Add Keyboard Shortcut Alt + W
 cat > "$HOME/.config/kglobalshortcutsrc" << 'EOF'
 [Save Current Wallpaper.desktop]
 _k_friendly_name=Save Current Wallpaper
 _launch=Alt+W,none,$HOME/.local/bin/wallsave
 EOF
+echo "===Added global keyboard shortcut: Alt + W to save current wallpaper.==="
 
 chmod +x "$HOME/.local/bin/wallsave"
-echo
 
-echo "=== Installation complete! Restart Plasma to apply changes ==="
-#echo "=== Restarting plasma-plasmashell service ==="
-#systemctl --user restart plasma-plasmashell.service
-	   
-					
-
-echo
-echo "=== Installation complete! ==="
-echo
-echo "Run with: wallsave"
-echo "or click the shortcut in the task manager (taskbar)"
+echo "=== Save Current Wallpaper installed successfully! Restart Plasma to apply changes ==="
