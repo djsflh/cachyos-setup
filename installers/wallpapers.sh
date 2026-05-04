@@ -51,7 +51,8 @@ else
 fi
 
 # ── Configure plasmalogin wallpaper ──────────────────────────────
-cp "$WALLPAPER_DIR/wallpapers/Balcony-ja.png" /var/lib/plasmalogin/wallpapers/
+sudo mkdir -p /var/lib/plasmalogin/wallpapers/
+sudo cp "$WALLPAPER_DIR/wallpapers/Balcony-ja.png" /var/lib/plasmalogin/wallpapers/
 
 PLASMALOGIN_CONF="/etc/plasmalogin.conf"
 
