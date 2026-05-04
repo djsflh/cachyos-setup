@@ -28,6 +28,8 @@ FILENAME=$(basename "$WALLPAPER")
 
 DEST="$HOME/Pictures/saved/$FILENAME"
 
+mkdir -p "$(dirname "$DEST")"
+
 cp "$WALLPAPER" "$DEST" 2>/dev/null || true
 echo "Saved $WALLPAPER to $DEST."
 EOF
