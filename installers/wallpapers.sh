@@ -3,7 +3,7 @@
 # Pull the wallpapers submodule
 git -C "$HOME/cachyos-setup" submodule update --init --recursive --progress wallpapers
 
-WALLPAPER_DIR="$HOME/cachyos-setup/wallpapers"
+WALLPAPER_DIR="$HOME/cachyos-setup/wallpapers/wallpapers"
 
 # ── Configure KDE slideshow wallpaper ─────────────────────────────
 PLASMA_CONFIG="$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
@@ -51,6 +51,8 @@ else
 fi
 
 # ── Configure plasmalogin wallpaper ──────────────────────────────
+cp "$WALLPAPER_DIR/wallpapers/Balcony-ja.png" /var/lib/plasmalogin/wallpapers/
+
 PLASMALOGIN_CONF="/etc/plasmalogin.conf"
 
 # kwriteconfig6 will create the section and key if they don't exist
