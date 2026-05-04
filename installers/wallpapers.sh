@@ -52,7 +52,7 @@ fi
 
 # ── Configure plasmalogin wallpaper ──────────────────────────────
 sudo mkdir -p /var/lib/plasmalogin/wallpapers/
-sudo cp "$WALLPAPER_DIR/wallpapers/Balcony-ja.png" /var/lib/plasmalogin/wallpapers/
+sudo cp "$WALLPAPER_DIR/Balcony-ja.png" /var/lib/plasmalogin/wallpapers/
 
 PLASMALOGIN_CONF="/etc/plasmalogin.conf"
 
