@@ -50,14 +50,14 @@ else
     echo "===KDE slideshow config written. Restart Plasma to apply changes.==="
 fi
 
-# ── Configure SDDM wallpaper ──────────────────────────────────────
-SDDM_THEME_CONF="/usr/share/sddm/themes/breeze/theme.conf"
+# ── Configure plasmalogin wallpaper ──────────────────────────────
+PLASMALOGIN_CONF="/etc/plasmalogin.conf"
 
-if [[ ! -f "$SDDM_THEME_CONF" ]]; then
-    echo "===WARNING: $SDDM_THEME_CONF not found. Skipping SDDM wallpaper config.==="
-else
-    sudo sed -i 's|^background=.*|background='"$HOME"'/cachyos-setup/wallpapers/Balcony-ja.png|' "$SDDM_THEME_CONF"
-    echo "===SDDM wallpaper set to $HOME/cachyos-setup/wallpapers/Balcony-ja.png==="
-fi
+# kwriteconfig6 will create the section and key if they don't exist
+sudo kwriteconfig6 --file "$PLASMALOGIN_CONF" \
+    --group "Greeter" --group "Wallpaper" --group "org.kde.image" --group "General" \
+    --key "Image" "file:///var/lib/plasmalogin/wallpapers/Balcony-ja.png"
+
+echo "===plasmalogin wallpaper set in $PLASMALOGIN_CONF==="
 
 echo "===Wallpaper setup complete.==="
